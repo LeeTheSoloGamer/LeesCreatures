@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "leescreatures:greemanar_ore"
+  },
+  "result": "leescreatures:greemanar_ingot",
+  "experience": 2.0,
+  "cookingtime": 200
+}

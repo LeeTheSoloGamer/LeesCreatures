@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "xx ",
+    " s ",
+    " s "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "leescreatures:durantium_steel"
+    },
+    "s":
+    {
+      "item": "leescreatures:durantium_stick"
+    }
+  },
+  "result":
+  {
+    "item": "leescreatures:durantium_hoe",
+    "count": 1
+  }
+}

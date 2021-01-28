@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    },
+    {
+      "item": "leescreatures:undead_essence"
+    }
+  ],
+  "result":
+  {
+    "item": "leescreatures:bottled_undead_essence",
+    "count": 1
+  }
+}

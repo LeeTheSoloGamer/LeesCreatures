@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "leescreatures:greemanar_block"
+    }
+  ],
+  "result":
+  {
+    "item": "leescreatures:greemanar_ingot",
+    "count": 9
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "leescreatures:durantium_ingot"
+    }
+  ],
+  "result":
+  {
+    "item": "leescreatures:durantium_nugget",
+    "count": 9
+  }
+}

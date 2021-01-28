@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "leescreatures:durantium_ingot"
+    }
+  ],
+  "result":
+  {
+    "item": "leescreatures:coin",
+    "count": 1
+  }
+}

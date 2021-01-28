@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "leescreatures:durantium_steel"
+    },
+    {
+      "item": "minecraft:stick"
+    }
+  ],
+  "result":
+  {
+    "item": "leescreatures:durantium_stick",
+    "count": 1
+  }
+}

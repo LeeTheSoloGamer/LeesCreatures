@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "leescreatures:raw_boarlin"
+  },
+  "result": "leescreatures:boarlin_meat",
+  "experience": 2.0,
+  "cookingtime": 200
+}

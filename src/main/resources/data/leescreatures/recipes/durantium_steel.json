@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "leescreatures:durantium_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "result":
+  {
+    "item": "leescreatures:durantium_steel",
+    "count": 1
+  }
+}

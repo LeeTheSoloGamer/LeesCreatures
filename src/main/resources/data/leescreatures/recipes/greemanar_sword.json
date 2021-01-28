@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " x ",
+    " x ",
+    " s "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "leescreatures:greemanar_ingot"
+    },
+    "s":
+    {
+      "item": "leescreatures:durantium_stick"
+    }
+  },
+  "result":
+  {
+    "item": "leescreatures:greemanar_sword",
+    "count": 1
+  }
+}

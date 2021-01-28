@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "xxx",
+    "x x",
+    "x x"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "leescreatures:greemanar_ingot"
+    }
+  },
+  "result":
+  {
+    "item": "leescreatures:greemanar_leggings",
+    "count": 1
+  }
+}

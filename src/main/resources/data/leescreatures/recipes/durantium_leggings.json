@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "xxx",
+    "x x",
+    "x x"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "leescreatures:durantium_ingot"
+    }
+  },
+  "result":
+  {
+    "item": "leescreatures:durantium_leggings",
+    "count": 1
+  }
+}

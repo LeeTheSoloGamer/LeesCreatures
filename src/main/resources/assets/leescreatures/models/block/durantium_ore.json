@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "leescreatures:blocks/durantium_ore"
+  }
+}
