@@ -8,10 +8,7 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,12 +24,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 public class SouleuronEntity extends AnimalEntity implements IAnimatable {
-
     private int exampleTimer;
-
-    public static AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle");
-    public static AnimationBuilder WALK_ANIM = new AnimationBuilder().addAnimation("walk");
-    private static final DataParameter<Boolean> WALKING = EntityDataManager.createKey(SouleuronEntity.class, DataSerializers.BOOLEAN);
 
     public SouleuronEntity(EntityType<SouleuronEntity> entityType, World worldIn) {
         super(entityType, worldIn);
@@ -42,14 +34,11 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
     private AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (!(event.getLimbSwingAmount() > -0.15F && event.getLimbSwingAmount() < 0.15F))
-        {
+        if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walking", true));
-        }
-        else
-        {
+            return PlayState.CONTINUE;
+        }else
             event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
-        }
         return PlayState.CONTINUE;
     }
 
@@ -57,17 +46,17 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 1.25D));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 1.D));
         this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(4, new RandomWalkingGoal(this, 0.10D));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 1.D));
     }
 
-    public static AttributeModifierMap.MutableAttribute func_234219_eI_() {
+    public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 50.0D)
                 .createMutableAttribute(Attributes.FOLLOW_RANGE, 20.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.10D);
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)0.23F);
     }
 
     @Override
@@ -88,31 +77,27 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
 
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public float getHeadRotationPointY(float p_70894_1_) {
-        if (this.exampleTimer <= 0) {
-            return 0.0F;
-        } else if (this.exampleTimer >= 4 && this.exampleTimer <= 36) {
-            return 1.0F;
-        } else {
-            return this.exampleTimer < 4 ? ((float) this.exampleTimer - p_70894_1_) / 4.0F
-                    : -((float) (this.exampleTimer - 40) - p_70894_1_) / 4.0F;
-        }
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return worldIn.checkNoEntityCollision(this);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public float getHeadRotationAngleX(float p_70890_1_) {
-        if (this.exampleTimer > 4 && this.exampleTimer <= 36) {
-            float f = ((float) (this.exampleTimer - 4) - p_70890_1_) / 32.0F;
-            return ((float) Math.PI / 5F) + 0.21991149F * MathHelper.sin(f * 28.7F);
-        } else {
-            return this.exampleTimer > 0 ? ((float) Math.PI / 5F) : this.rotationPitch * ((float) Math.PI / 180F);
-        }
+    public int getMaxSpawnedInChunk() {
+        return 1;
     }
 
     @Override
     public void registerControllers(AnimationData animationData) {
         animationData.addAnimationController(new AnimationController<SouleuronEntity>(this, "controller", 0,this::predicate));
+    }
+
+    @Override
+    protected int getExperiencePoints(PlayerEntity player) {
+        return 3;
+    }
+
+    @Override
+    public boolean canBeLeashedTo(PlayerEntity player) {
+        return super.canBeLeashedTo(player);
     }
 
     @Override

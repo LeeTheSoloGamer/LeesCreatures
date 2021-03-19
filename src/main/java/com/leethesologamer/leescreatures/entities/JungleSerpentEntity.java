@@ -5,7 +5,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.PigEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,9 +16,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -33,26 +36,26 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
+public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
+    private static final DataParameter<Boolean> STRIKING = EntityDataManager.createKey(JungleSerpentEntity.class,
+            DataSerializers.BOOLEAN);
 
-public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
-    private static final DataParameter<Boolean> BITEING = EntityDataManager.createKey(CrystalWyvernEntity.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(CrystalWyvernEntity.class, DataSerializers.VARINT);
     private int exampleTimer;
 
-    public CrystalWyvernEntity(EntityType<CrystalWyvernEntity> entityType, World worldIn) {
+    public JungleSerpentEntity(EntityType<JungleSerpentEntity> entityType, World worldIn) {
         super(entityType, worldIn);
-        this.setTamed(false);    }
+        this.setTamed(false);
+    }
 
     private AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walking", true));
+        if (event.isMoving() && !this.dataManager.get(STRIKING)) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("slithering", true));
             return PlayState.CONTINUE;
         }
-        if (this.dataManager.get(BITEING)){
+        if ((this.dataManager.get(STRIKING))) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attacking", true));
             return PlayState.CONTINUE;
         }else
@@ -63,11 +66,12 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new CrystalWyvernEntity.ChompAttackGoal());
-        this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.1D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new JungleSerpentEntity.StrikeAttackGoal());
+        this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.2D));
+        this.goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.5D));
         this.applyEntityAI();
     }
 
@@ -75,25 +79,26 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, new HurtByTargetGoal(this, PlayerEntity.class));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, BoarlinEntity.class, true));
-        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, PigEntity.class, true));
+        this.targetSelector.addGoal(4, (new HurtByTargetGoal(this)).setCallsForHelp());
+        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
+        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, AnimalEntity.class, true));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 60.0D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 36.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)0.23F)
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 22.0D);
+                .createMutableAttribute(Attributes.MAX_HEALTH, 57.0D)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 20.0D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, (double)0.29F)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 12.0D);
+
     }
 
     @Override
     public void livingTick() {
-        super.livingTick();
         if (this.world.isRemote) {
             this.exampleTimer = Math.max(0, this.exampleTimer - 1);
         }
+        super.livingTick();
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -103,14 +108,11 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
         } else {
             super.handleStatusUpdate(id);
         }
-    }
 
-    public boolean isNotColliding(IWorldReader worldIn) {
-        return worldIn.checkNoEntityCollision(this);
     }
 
     public int getMaxSpawnedInChunk() {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -119,13 +121,8 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
     }
 
     @Override
-    public boolean canBeLeashedTo(PlayerEntity player) {
-        return super.canBeLeashedTo(player);
-    }
-
-    @Override
     public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+        animationData.addAnimationController(new AnimationController<JungleSerpentEntity>(this, "controller", 0,this::predicate));
     }
 
     @Override
@@ -134,60 +131,8 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(VARIANT, 0);
-        this.dataManager.register(BITEING, false);
-    }
-
-    public int getVariant() {
-        return this.dataManager.get(VARIANT);
-    }
-
-    public void setVariant(int type) {
-        this.dataManager.set(VARIANT, type);
-    }
-
-    public boolean isBiteing() {
-        return this.dataManager.get(BITEING);
-    }
-
-    public void setBiteing(boolean biteing) {
-        this.dataManager.set(BITEING, biteing);
-    }
-
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
-        compound.putInt("Variant", this.getVariant());
-        compound.putBoolean("Biteing", this.isBiteing());
-    }
-
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        this.setVariant(compound.getInt("Variant"));
-        this.setBiteing(compound.getBoolean("Biteing"));
-    }
-
-
-    @Nullable
-    public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        int type;
-        Random random = new Random();
-        if (random.nextFloat() > 0.5) {
-            type = 1;
-        } else if (random.nextFloat() > 0.6) {
-            type = 2;
-        } else if (random.nextFloat() > 0.9) {
-            type = 3;
-        } else if (random.nextFloat() > 0.10) {
-            type = 4;
-        } else if (random.nextFloat() > 0.11) {
-            type = 5;
-        } else {
-            type = 0;
-        }
-        this.setVariant(type);
-        return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    public boolean canBeLeashedTo(PlayerEntity player) {
+        return super.canBeLeashedTo(player);
     }
 
     @Nullable
@@ -196,33 +141,72 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
         return null;
     }
 
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(STRIKING, false);
+    }
+
+    public boolean isNotColliding(IWorldReader worldIn) {
+        return worldIn.checkNoEntityCollision(this);
+    }
+
+    @Override
+    public void setTamedBy(PlayerEntity player) {
+        super.setTamedBy(player);
+    }
+
+    public boolean isStriking() {
+        return this.dataManager.get(STRIKING);
+    }
+
+    public void setStriking(boolean striking) {
+        this.dataManager.set(STRIKING,striking);
+    }
+
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putBoolean("Striking", this.isStriking());
+
+    }
+
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        this.setStriking(compound.getBoolean("Striking"));
+    }
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
         if (this.isInvulnerableTo(source)) {
             return false;
         }
-
-        if(this.isSitting()) {
-            return false;
-
-        } else {
+        else {
             return super.attackEntityFrom(source, amount);
         }
     }
 
     public boolean attackEntityAsMob(Entity entityIn) {
-        boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
-        if (flag) {
-            this.applyEnchantments(this, entityIn);
-        }
+        if (super.attackEntityAsMob(entityIn)) {
+            if (entityIn instanceof LivingEntity) {
+                int i = 0;
+                if (this.world.getDifficulty() == Difficulty.NORMAL) {
+                    i = 10;
+                } else if (this.world.getDifficulty() == Difficulty.HARD) {
+                    i = 20;
+                }
+                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, i * 24, 0));
+            }
 
-        return flag;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
-        if (!(target instanceof BoarlinEntity)) {
-            if (target instanceof CrystalWyvernEntity) {
-                CrystalWyvernEntity crystalWyvernEntity = (CrystalWyvernEntity) target;
-                return !crystalWyvernEntity.isTamed() || crystalWyvernEntity.getOwner() != owner;
+        if (!(target instanceof CrystalWyvernEntity)) {
+            if (target instanceof BoarlinEntity) {
+                BoarlinEntity boarlinEntity = (BoarlinEntity) target;
+                return !boarlinEntity.isTamed() || boarlinEntity.getOwner() != owner;
             } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity) owner).canAttackPlayer((PlayerEntity) target)) {
                 return false;
             } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity) target).isTame()) {
@@ -239,7 +223,7 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
         ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
         Item item = itemstack.getItem();
         if (this.world.isRemote) {
-            boolean flag = this.isOwner(p_230254_1_) || this.isTamed() || item == ModItems.JEWELED_EGG.get() && !this.isTamed();
+            boolean flag = this.isOwner(p_230254_1_) || this.isTamed() || item == ModItems.CRESTED_CRIKESTREAKER_EGG.get() && !this.isTamed();
             return flag ? ActionResultType.CONSUME : ActionResultType.PASS;
         } else {
             if (this.isTamed()) {
@@ -264,12 +248,12 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
                     return actionresulttype;
                 }
 
-            } else if (item == ModItems.JEWELED_EGG.get() ) {
+            } else if (item == ModItems.CRESTED_CRIKESTREAKER_EGG.get() ) {
                 if (!p_230254_1_.abilities.isCreativeMode) {
                     itemstack.shrink(1);
                 }
 
-                if (this.rand.nextInt(10) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, p_230254_1_)) {
+                if (this.rand.nextInt(5) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, p_230254_1_)) {
                     this.setTamedBy(p_230254_1_);
                     this.navigator.clearPath();
                     this.setAttackTarget((LivingEntity)null);
@@ -302,9 +286,9 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
         return super.isOnSameTeam(entityIn);
     }
 
-    class ChompAttackGoal extends net.minecraft.entity.ai.goal.MeleeAttackGoal {
-        public ChompAttackGoal() {
-            super(CrystalWyvernEntity.this, 1.2D, true);
+    class StrikeAttackGoal extends net.minecraft.entity.ai.goal.MeleeAttackGoal {
+        public StrikeAttackGoal() {
+            super(JungleSerpentEntity.this, 1.D, true);
         }
 
         protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
@@ -312,24 +296,24 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
             if (distToEnemySqr <= d0 && this.func_234040_h_()) {
                 this.func_234039_g_();
                 this.attacker.attackEntityAsMob(enemy);
-                CrystalWyvernEntity.this.setBiteing(false);
+                JungleSerpentEntity.this.setStriking(true);
             } else if (distToEnemySqr <= d0 * 2.0D) {
                 if (this.func_234040_h_()) {
-                    CrystalWyvernEntity.this.setBiteing(false);
+                    JungleSerpentEntity.this.setStriking(false);
                     this.func_234039_g_();
                 }
 
                 if (this.func_234041_j_() <= 10) {
-                    CrystalWyvernEntity.this.setBiteing(true);
+                    JungleSerpentEntity.this.setStriking(true);
                 }
             }else {
                 this.func_234039_g_();
-                CrystalWyvernEntity.this.setBiteing(false);
+                JungleSerpentEntity.this.setStriking(false);
             }
         }
 
         public void resetTask() {
-            CrystalWyvernEntity.this.setBiteing(false);
+            JungleSerpentEntity.this.setStriking(false);
             super.resetTask();
         }
 
@@ -338,3 +322,5 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable {
         }
     }
 }
+
+
