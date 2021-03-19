@@ -1,8 +1,8 @@
 package com.leethesologamer.leescreatures.client.entity.render;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
-import com.leethesologamer.leescreatures.client.entity.model.BoarlinEntityModel;
-import com.leethesologamer.leescreatures.entities.BoarlinEntity;
+import com.leethesologamer.leescreatures.client.entity.model.BeastDogModel;
+import com.leethesologamer.leescreatures.entities.BeastDogEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -13,19 +13,18 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 @OnlyIn(Dist.CLIENT)
-public class BoarlinEntityRender extends GeoEntityRenderer<BoarlinEntity> {
-    public BoarlinEntityRender(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new BoarlinEntityModel());
+public class BeastDogRender extends GeoEntityRenderer<BeastDogEntity> {
+    public BeastDogRender(EntityRendererManager renderManagerIn) {
+        super(renderManagerIn, new BeastDogModel());
     }
 
     @Override
-    public RenderType getRenderType(BoarlinEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+    public RenderType getRenderType(BeastDogEntity animatable, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
         return RenderType.getEntityTranslucent(this.getEntityTexture(animatable));
     }
 
     @Override
-    public ResourceLocation getEntityTexture(BoarlinEntity entity) {
-        return new ResourceLocation(LeesCreatures.MOD_ID, "textures/entity/boarlin/boarlin_entity.png");
+    public ResourceLocation getEntityTexture(BeastDogEntity entity) {
+        return new ResourceLocation(LeesCreatures.MOD_ID, "textures/entity/beast_dog/beast_dog_entity.png");
     }
-
 }
