@@ -13,4 +13,5 @@ public class FoodInit {
     public static final Food RAW_BOARLIN = new Food.Builder()
             .effect(() -> new EffectInstance(Effects.POISON, 100, 2), 1.0f).hunger(2).meat().saturation(0.1f)
             .setAlwaysEdible().build();
+
 }

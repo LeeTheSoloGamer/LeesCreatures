@@ -15,12 +15,20 @@ import java.util.function.Supplier;
 
 public enum ModArmorMaterial implements IArmorMaterial {
 
-    GREEMANAR(LeesCreatures.MOD_ID + ":greemanar", 35, new int[] {3,5,7,2},19,
-            SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2.0f, ()-> { return Ingredient.fromItems(ModItems.GREEMANAR_INGOT.get());
+    BEASTLY_ARMOR(LeesCreatures.MOD_ID + ":beastly_armor", 16, new int[] {2,6,6,2},18,
+            SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.2f, 0.1f, ()-> { return Ingredient.fromItems(ModItems.BEASTLY_HIDE.get());
     }),
 
-    DURANTIUM(LeesCreatures.MOD_ID + ":durantium", 36, new int[] {3,7,8,3},19,
-            SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.0f, ()-> { return Ingredient.fromItems(ModItems.DURANTIUM_INGOT.get());
+    JUNGLE_SERPENT_ARMOR(LeesCreatures.MOD_ID + ":jungle_serpent_armor", 31, new int[] {3,6,7,3},18,
+            SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.9f, 0.1f, ()-> { return Ingredient.fromItems(ModItems.JUNGLE_SERPENT_SCALES.get());
+    }),
+
+    GREEMANAR(LeesCreatures.MOD_ID + ":greemanar", 34, new int[] {3,7,8,3},19,
+            SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2.2f, 0.1f, ()-> { return Ingredient.fromItems(ModItems.GREEMANAR_INGOT.get());
+    }),
+
+    DURANTIUM(LeesCreatures.MOD_ID + ":durantium", 38, new int[] {3,8,9,4},19,
+            SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.2f, 0.2f, ()-> { return Ingredient.fromItems(ModItems.DURANTIUM_INGOT.get());
     });
 
     private static final int[] MAX_DAMAGE_ARRAY = new int[] {11, 16, 15, 13 };
@@ -30,16 +38,18 @@ public enum ModArmorMaterial implements IArmorMaterial {
     private final int enchantability;
     private final SoundEvent soundEvent;
     private final float toughness;
+    private final float knockbackResistance;
     private final Supplier<Ingredient> repairMaterial;
 
 
-    ModArmorMaterial(String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent, float toughness, Supplier<Ingredient> repairMaterial) {
+    ModArmorMaterial(String name, int maxDamageFactor, int[] damageReductionAmountArray, int enchantability, SoundEvent soundEvent, float toughness, float knockbackResistance, Supplier<Ingredient> repairMaterial) {
         this.name = name;
         this.maxDamageFactor = maxDamageFactor;
         this.damageReductionAmountArray = damageReductionAmountArray;
         this.enchantability = enchantability;
         this.soundEvent = soundEvent;
         this.toughness = toughness;
+        this.knockbackResistance = knockbackResistance;
         this.repairMaterial = repairMaterial;
     }
 
@@ -81,6 +91,6 @@ public enum ModArmorMaterial implements IArmorMaterial {
 
     @Override
     public float getKnockbackResistance() {
-        return 0;
+        return this.knockbackResistance;
     }
 }

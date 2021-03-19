@@ -13,7 +13,7 @@ public enum ModItemTier implements IItemTier {
         return Ingredient.fromItems(ModItems.DURANTIUM_SWORD.get());
     }),
 
-    GREEMANAR( 3, 1700, 8.0f,3.0f, 12, ()->{
+    GREEMANAR( 3, 1500, 6.0f,2.0f, 12, ()->{
         return Ingredient.fromItems(ModItems.GREEMANAR_LONG_SWORD.get());
     });
 

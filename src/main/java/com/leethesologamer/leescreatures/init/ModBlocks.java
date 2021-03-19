@@ -28,7 +28,7 @@ public class ModBlocks {
 
     //ore
     public static final RegistryObject<Block> DURANTIUM_ORE = BLOCKS.register("durantium_ore",
-            () -> new Block(AbstractBlock.Properties.from(Blocks.IRON_ORE)));
+            () -> new Block(AbstractBlock.Properties.from(Blocks.OBSIDIAN)));
 
     public static final RegistryObject<Block> GREEMANAR_ORE = BLOCKS.register("greemanar_ore",
             () -> new Block(AbstractBlock.Properties.from(Blocks.IRON_ORE)));

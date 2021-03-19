@@ -1,12 +1,13 @@
 package com.leethesologamer.leescreatures;
 
-import com.leethesologamer.leescreatures.entities.BoarlinEntity;
-import com.leethesologamer.leescreatures.entities.CrystalWyvernEntity;
-import com.leethesologamer.leescreatures.entities.SouleuronEntity;
+import com.leethesologamer.leescreatures.entities.*;
+import com.leethesologamer.leescreatures.world.ModEntitySpawing;
+import com.leethesologamer.leescreatures.world.OreGeneration;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.leethesologamer.leescreatures.init.ModBlocks;
 import com.leethesologamer.leescreatures.init.ModEntityTypes;
 import com.leethesologamer.leescreatures.init.ModItems;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import software.bernie.example.GeckoLibMod;
 import software.bernie.geckolib3.GeckoLib;
 
 
@@ -35,27 +37,36 @@ public class LeesCreatures {
     public LeesCreatures() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::setup);
+        GeckoLibMod.DISABLE_IN_DEV = true;
         GeckoLib.initialize();
 
         ModBlocks.BLOCKS.register(bus);
         ModItems.ITEMS.register(bus);
         ModEntityTypes.ENTITY_TYPES.register(bus);
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, OreGeneration::generateOres);
+        MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoad);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            GlobalEntityTypeAttributes.put(ModEntityTypes.BOARLIN_ENTITY.get(), BoarlinEntity.func_233666_p_().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.SOULEURON_ENTITY.get(), SouleuronEntity.func_233666_p_().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.CRYSTAL_WYVERN_ENTITY.get(), CrystalWyvernEntity.func_233666_p_().create());
-        });
+    @SubscribeEvent
+    public void onBiomeLoad(BiomeLoadingEvent event) {
+        ModEntitySpawing.onBiomesLoad(event);
     }
 
+    private void setup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
+            GlobalEntityTypeAttributes.put(ModEntityTypes.BOARLIN_ENTITY.get(), BoarlinEntity.registerAttributes().create());
+            GlobalEntityTypeAttributes.put(ModEntityTypes.SOULEURON_ENTITY.get(), SouleuronEntity.registerAttributes().create());
+            GlobalEntityTypeAttributes.put(ModEntityTypes.CRYSTAL_WYVERN_ENTITY.get(), CrystalWyvernEntity.registerAttributes().create());
+            GlobalEntityTypeAttributes.put(ModEntityTypes.JUNGLE_SERPENT_ENTITY.get(), JungleSerpentEntity.registerAttributes().create());
+            GlobalEntityTypeAttributes.put(ModEntityTypes.BEAST_DOG_ENTITY.get(), BeastDogEntity.registerAttributes().create());
+            GlobalEntityTypeAttributes.put(ModEntityTypes.CRESTED_CRIKESTREAKER_ENTITY.get(), CrestedCrikestreakerEntity.registerAttributes().create());
+         });
+    }
     private void doClientStuff(final FMLClientSetupEvent event) {
 
     }
-
         @SubscribeEvent
         public static void onRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
         ModSpawnEggItem.initSpawnEggs();
@@ -68,8 +79,6 @@ public class LeesCreatures {
         @Override
         public ItemStack createIcon() {
             return ModItems.DURANTIUM_ORE_ITEM.get().getDefaultInstance();
-
         }
-
     }
 }
