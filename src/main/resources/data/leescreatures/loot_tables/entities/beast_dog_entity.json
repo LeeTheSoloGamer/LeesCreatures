@@ -6,13 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "leescreatures:undead_essence",
+          "name": "leescreatures:beastly_hide",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "min": 1,
-                "max": 2
+                "max": 3
               },
               "add": true,
               "conditions": [

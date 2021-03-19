@@ -4,18 +4,18 @@
   [
     "xxx",
     "x x",
-    "x x"
+    "   "
   ],
   "key":
   {
     "x":
     {
-      "item": "leescreatures:durantium_steel"
+      "item": "leescreatures:beastly_hide"
     }
   },
   "result":
   {
-    "item": "leescreatures:durantium_leggings",
+    "item": "leescreatures:beastly_helmet",
     "count": 1
   }
 }

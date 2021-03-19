@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    "sds",
+    "xex",
+    "sgs"
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "leescreatures:crested_crikestreaker_egg"
+    },
+    "s":
+    {
+      "item": "leescreatures:raw_boarlin"
+    },
+    "e":
+    {
+      "item": "minecraft:emerald_block"
+    },
+    "d":
+    {
+      "item": "minecraft:diamond"
+    },
+    "g":
+    {
+      "item": "minecraft:gold_block"
+    }
+  },
+  "result":
+  {
+    "item": "leescreatures:jeweled_egg",
+    "count": 1
+  }
+}

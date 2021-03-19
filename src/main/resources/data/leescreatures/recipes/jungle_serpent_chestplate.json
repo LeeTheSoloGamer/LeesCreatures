@@ -2,20 +2,20 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "xxx",
     "x x",
-    "x x"
+    "xxx",
+    "xxx"
   ],
   "key":
   {
     "x":
     {
-      "item": "leescreatures:durantium_steel"
+      "item": "leescreatures:jungle_serpent_scales"
     }
   },
   "result":
   {
-    "item": "leescreatures:durantium_leggings",
+    "item": "leescreatures:jungle_serpent_chestplate",
     "count": 1
   }
 }

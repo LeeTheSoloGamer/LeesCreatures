@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern":
+  [
+    " x ",
+    " s ",
+    " f "
+  ],
+  "key":
+  {
+    "x":
+    {
+      "item": "minecraft:flint"
+    },
+    "f":
+    {
+      "item": "leescreatures:crested_crikestreaker_feather"
+    },
+    "s":
+    {
+      "item": "minecraft:stick"
+    }
+  },
+  "result":
+  {
+    "item": "minecraft:arrow",
+    "count": 4
+  }
+}

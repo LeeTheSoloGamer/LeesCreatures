@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "xxx",
+    "   ",
     "x x",
     "x x"
   ],
@@ -10,12 +10,12 @@
   {
     "x":
     {
-      "item": "leescreatures:durantium_steel"
+      "item": "leescreatures:jungle_serpent_scales"
     }
   },
   "result":
   {
-    "item": "leescreatures:durantium_leggings",
+    "item": "leescreatures:jungle_serpent_boots",
     "count": 1
   }
 }

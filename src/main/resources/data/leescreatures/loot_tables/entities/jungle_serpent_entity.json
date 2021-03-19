@@ -6,13 +6,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "leescreatures:raw_boarlin",
+          "name": "leescreatures:jungle_serpent_fang",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
                 "min": 1,
-                "max": 2
+                "max": 1
               },
               "add": true,
               "conditions": [
@@ -30,7 +30,31 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:leather",
+          "name": "leescreatures:poisonous_gland",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 1
+              },
+              "add": true,
+              "conditions": [
+                {
+                  "condition": "minecraft:killed_by_player",
+                  "inverse": false
+                },
+                {
+                  "condition": "minecraft:random_chance",
+                  "chance": 0.2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "leescreatures:jungle_serpent_scales",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -46,7 +70,7 @@
                 },
                 {
                   "condition": "minecraft:random_chance",
-                  "chance": 0.6
+                  "chance": 0.5
                 }
               ]
             }

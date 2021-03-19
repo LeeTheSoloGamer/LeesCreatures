@@ -10,12 +10,12 @@
   {
     "x":
     {
-      "item": "leescreatures:durantium_steel"
+      "item": "leescreatures:beastly_hide"
     }
   },
   "result":
   {
-    "item": "leescreatures:durantium_leggings",
+    "item": "leescreatures:beastly_leggings",
     "count": 1
   }
 }
