@@ -1,21 +1,51 @@
 package com.leethesologamer.leescreatures.entities;
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.leethesologamer.leescreatures.entities.flying.ai.TamedAiRide;
+
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.IAngerable;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.BreedGoal;
+import net.minecraft.entity.ai.goal.EatGrassGoal;
+import net.minecraft.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.entity.ai.goal.FollowParentGoal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
+import net.minecraft.entity.ai.goal.SitGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IWorldReader;
@@ -30,9 +60,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimatable{
     private static final DataParameter<Boolean> BUCKING = EntityDataManager.createKey(BoarlinEntity.class, DataSerializers.BOOLEAN);
@@ -68,6 +95,7 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
     protected void registerGoals() {
         super.registerGoals();
         this.eatGrassGoal = new EatGrassGoal(this);
+        this.goalSelector.addGoal(2, new SitGoal(this));
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new BoarlinEntity.BuckingGoal());
         this.goalSelector.addGoal(1, new TamedAiRide(this, 1.D));
@@ -118,6 +146,24 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
             }
         }
     }
+    public ActionResultType func_230254_b_1(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+        ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
+        Item item = itemstack.getItem();
+       
+
+              if (!(item instanceof DyeItem)) {
+                 ActionResultType actionresulttype = super.func_230254_b_(p_230254_1_, p_230254_2_);
+                 if ((!actionresulttype.isSuccessOrConsume() || this.isChild()) && this.isOwner(p_230254_1_)) {
+                    this.func_233687_w_(!this.isSitting());
+                    this.isJumping = false;
+                    this.navigator.clearPath();
+                    this.setAttackTarget((LivingEntity)null);
+                    return ActionResultType.SUCCESS;
+                 }
+
+                 return actionresulttype;
+              }
+			return null;}
 
     @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte id) {

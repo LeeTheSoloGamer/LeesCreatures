@@ -1,10 +1,26 @@
 package com.leethesologamer.leescreatures.entities;
 
+import javax.annotation.Nullable;
+
 import com.leethesologamer.leescreatures.init.ModItems;
-import net.minecraft.entity.*;
+
+import net.minecraft.entity.AgeableEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
+import net.minecraft.entity.ai.goal.RandomWalkingGoal;
+import net.minecraft.entity.ai.goal.SitGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
@@ -34,8 +50,6 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-
-import javax.annotation.Nullable;
 
 public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
     private static final DataParameter<Boolean> STRIKING = EntityDataManager.createKey(JungleSerpentEntity.class,
@@ -67,6 +81,7 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(2, new SitGoal(this));
         this.goalSelector.addGoal(1, new JungleSerpentEntity.StrikeAttackGoal());
         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 6.0F));
@@ -92,6 +107,24 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 12.0D);
 
     }
+    public ActionResultType func_230254_b_1(PlayerEntity p_230254_1_, Hand p_230254_2_) {
+        ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
+        Item item = itemstack.getItem();
+       
+
+              if (!(item instanceof DyeItem)) {
+                 ActionResultType actionresulttype = super.func_230254_b_(p_230254_1_, p_230254_2_);
+                 if ((!actionresulttype.isSuccessOrConsume() || this.isChild()) && this.isOwner(p_230254_1_)) {
+                    this.func_233687_w_(!this.isSitting());
+                    this.isJumping = false;
+                    this.navigator.clearPath();
+                    this.setAttackTarget((LivingEntity)null);
+                    return ActionResultType.SUCCESS;
+                 }
+
+                 return actionresulttype;
+              }
+			return null;}
 
     @Override
     public void livingTick() {
