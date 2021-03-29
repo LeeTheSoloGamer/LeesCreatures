@@ -16,12 +16,15 @@ import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.SitGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.monster.AbstractSkeletonEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeItem;
@@ -50,6 +53,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class BeastDogEntity extends TameableEntity implements IAnimatable {
 
     private static final DataParameter<Boolean> BITE = EntityDataManager.createKey(BeastDogEntity.class,DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(BeastDogEntity.class,DataSerializers.BOOLEAN);
 
     private int exampleTimer;
 
@@ -70,6 +74,10 @@ public class BeastDogEntity extends TameableEntity implements IAnimatable {
         if (this.dataManager.get(BITE)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attacking", true));
             return PlayState.CONTINUE;
+        }
+		if (this.dataManager.get(SITTING)) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
+            return PlayState.CONTINUE;
         }else
             event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
         return PlayState.CONTINUE;
@@ -78,13 +86,13 @@ public class BeastDogEntity extends TameableEntity implements IAnimatable {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(2, new SitGoal(this));
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new BeastDogEntity.MeleeAttackGoal());
-        this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.3D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.3D));
+        this.goalSelector.addGoal(1, new SitGoal(this));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal());
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.3D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(7, new WaterAvoidingRandomWalkingGoal(this, 1.3D));
         this.applyEntityAI();
     }
 
@@ -95,6 +103,9 @@ public class BeastDogEntity extends TameableEntity implements IAnimatable {
         this.targetSelector.addGoal(4, (new HurtByTargetGoal(this)).setCallsForHelp());
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, BoarlinEntity.class, true));
+        this.targetSelector.addGoal(7, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
+        this.targetSelector.addGoal(8, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
+      
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -122,7 +133,6 @@ public class BeastDogEntity extends TameableEntity implements IAnimatable {
                  return actionresulttype;
               }
 			return null;}
-    
 
     @Override
     public void livingTick() {
@@ -179,6 +189,7 @@ public class BeastDogEntity extends TameableEntity implements IAnimatable {
     protected void registerData() {
         super.registerData();
         this.dataManager.register(BITE, false);
+        this.dataManager.register(SITTING, false);
 
     }
 
@@ -195,15 +206,25 @@ public class BeastDogEntity extends TameableEntity implements IAnimatable {
         this.dataManager.set(BITE,bite);
     }
 
+    public boolean isSitting() {
+        return this.dataManager.get(SITTING);
+    }
+
+    public void setSitting(boolean sitting) {
+        this.dataManager.set(SITTING,sitting);
+    }
+
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("Bite", this.isBite());
+        compound.putBoolean("Sitting", this.isSitting());
 
     }
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setBite(compound.getBoolean("Bite"));
+        this.setSitting(compound.getBoolean("Sitting"));
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -246,52 +267,51 @@ public class BeastDogEntity extends TameableEntity implements IAnimatable {
         ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
         Item item = itemstack.getItem();
         if (this.world.isRemote) {
-            boolean flag = this.isOwner(p_230254_1_) || this.isTamed() || item == ModItems.RAW_BOARLIN.get() && !this.isTamed();
-            return flag ? ActionResultType.CONSUME : ActionResultType.PASS;
+         boolean flag = this.isOwner(p_230254_1_) || this.isTamed() || item == ModItems.RAW_BOARLIN.get() && !this.isTamed(); 
+           return flag ? ActionResultType.CONSUME : ActionResultType.PASS;
         } else {
-            if (this.isTamed()) {
-                if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
-                    if (!p_230254_1_.abilities.isCreativeMode) {
-                        itemstack.shrink(1);
-                    }
-
-                    this.heal((float)item.getFood().getHealing());
-                    return ActionResultType.SUCCESS;
-                }
-
-                if (!(item instanceof DyeItem)) {
-                    ActionResultType actionresulttype = super.func_230254_b_(p_230254_1_, p_230254_2_);
-                    if ((!actionresulttype.isSuccessOrConsume() || this.isChild()) && this.isOwner(p_230254_1_)) {
-                        this.func_233687_w_(!this.isSitting());
-                        this.navigator.clearPath();
-                        this.setAttackTarget((LivingEntity)null);
-                        return ActionResultType.SUCCESS;
-                    }
-
-                    return actionresulttype;
-                }
-
-            } else if (item == ModItems.RAW_BOARLIN.get() ) {
-                if (!p_230254_1_.abilities.isCreativeMode) {
+           if (this.isTamed()) {
+              if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
+                 if (!p_230254_1_.abilities.isCreativeMode) {
                     itemstack.shrink(1);
-                }
+                 }
 
-                if (this.rand.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, p_230254_1_)) {
-                    this.setTamedBy(p_230254_1_);
+                 this.heal((float)item.getFood().getHealing());
+                 return ActionResultType.SUCCESS;
+              }
+
+              if (!(item instanceof DyeItem)) {
+                 ActionResultType actionresulttype = super.func_230254_b_(p_230254_1_, p_230254_2_);
+                 if ((!actionresulttype.isSuccessOrConsume() || this.isChild()) && this.isOwner(p_230254_1_)) {
+                    this.func_233687_w_(!this.isSitting());
+                    this.isJumping = false;
                     this.navigator.clearPath();
                     this.setAttackTarget((LivingEntity)null);
-                    this.func_233687_w_(true);
-                    this.world.setEntityState(this, (byte)7);
-                } else {
-                    this.world.setEntityState(this, (byte)6);
-                }
+                    return ActionResultType.SUCCESS;
+                 }
 
-                return ActionResultType.SUCCESS;
-            }
+                 return actionresulttype;
+              }
 
-            return super.func_230254_b_(p_230254_1_, p_230254_2_);
-        }
-    }
+                
+              }
+        
+              if (this.rand.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, p_230254_1_)) {
+                 this.setTamedBy(p_230254_1_);
+                 this.navigator.clearPath();
+                 this.setAttackTarget((LivingEntity)null);
+                 this.func_233687_w_(true);
+                 this.world.setEntityState(this, (byte)7);
+              } else {
+                 this.world.setEntityState(this, (byte)6);
+              }
+
+              return ActionResultType.SUCCESS;
+           }
+        
+     }
+
+     
 
     public boolean isOnSameTeam(Entity entityIn) {
         if (this.isTamed()) {
