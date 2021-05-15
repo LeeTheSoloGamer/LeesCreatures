@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "leescreatures:bottle_of_poison"
+    },
+    {
+      "item": "leescreatures:serpent_fang_dagger"
+    }
+  ],
+  "result":
+  {
+    "item": "leescreatures:poison_fang_dagger",
+    "count": 1
+  }
+}

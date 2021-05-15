@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "leescreatures:crystal_block"
+    }
+  ],
+  "result":
+  {
+    "item": "leescreatures:crystal",
+    "count": 9
+  }
+}

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "x x",
+    "xxx",
     "xxx",
     "xxx"
   ],
@@ -10,12 +10,12 @@
   {
     "x":
     {
-      "item": "leescreatures:durantium_ingot"
+      "item": "leescreatures:crystal"
     }
   },
   "result":
   {
-    "item": "leescreatures:durantium_chestplate",
+    "item": "leescreatures:crystal_block",
     "count": 1
   }
 }

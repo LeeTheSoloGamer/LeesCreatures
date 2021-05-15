@@ -10,12 +10,12 @@
   {
     "x":
     {
-      "item": "leescreatures:durantium_ingot"
+      "item": "leescreatures:light_blue_crystal_wyvern_scales.json"
     }
   },
   "result":
   {
-    "item": "leescreatures:durantium_chestplate",
+    "item": "leescreatures:light_blue_crystal_wyvern_chestplate",
     "count": 1
   }
 }

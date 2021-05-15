@@ -10,11 +10,11 @@
   {
     "x":
     {
-      "item": "leescreatures:durantium_steel"
+      "item": "leescreatures:durantium_ingot"
     },
     "s":
     {
-      "item": "leescreatures:durantium_stick"
+      "item": "leescreatures:durantium_rod"
     }
   },
   "result":

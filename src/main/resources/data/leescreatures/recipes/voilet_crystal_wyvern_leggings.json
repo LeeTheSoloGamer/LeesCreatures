@@ -2,20 +2,20 @@
   "type": "minecraft:crafting_shaped",
   "pattern":
   [
-    "x x",
     "xxx",
-    "xxx"
+    "x x",
+    "x x"
   ],
   "key":
   {
     "x":
     {
-      "item": "leescreatures:durantium_ingot"
+      "item": "leescreatures:voilet_crystal_wyvern_scales"
     }
   },
   "result":
   {
-    "item": "leescreatures:durantium_chestplate",
+    "item": "leescreatures:voilet_crystal_wyvern_leggings",
     "count": 1
   }
 }
