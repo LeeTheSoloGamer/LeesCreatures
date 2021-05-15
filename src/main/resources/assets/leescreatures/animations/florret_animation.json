@@ -1,0 +1,124 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"walking": {
+			"loop": true,
+			"animation_length": 0.76,
+			"bones": {
+				"Tail": {
+					"rotation": {
+						"0.0": [0, 0, 8],
+						"0.4": [0, 0, -8],
+						"0.76": [0, 0, 8]
+					}
+				},
+				"Front_leg_left": {
+					"rotation": {
+						"0.0": [-22.5, 0, 0],
+						"0.4": [22.5, 0, 0],
+						"0.76": [-22.5, 0, 0]
+					}
+				},
+				"Front_leg_right": {
+					"rotation": {
+						"0.0": [22.5, 0, 0],
+						"0.4": [-22.5, 0, 0],
+						"0.76": [22.5, 0, 0]
+					}
+				},
+				"Back_leg_left": {
+					"rotation": {
+						"0.0": [22.5, 0, 0],
+						"0.4": [-22.5, 0, 0],
+						"0.76": [22.5, 0, 0]
+					}
+				},
+				"Back_leg_right": {
+					"rotation": {
+						"0.0": [-22.5, 0, 0],
+						"0.4": [22.5, 0, 0],
+						"0.76": [-22.5, 0, 0]
+					}
+				},
+				"Body": {
+					"rotation": {
+						"0.0": [0, 0, 2],
+						"0.4": [0, 0, -2],
+						"0.76": [0, 0, 2]
+					}
+				}
+			}
+		},
+		"idle": {
+			"loop": true,
+			"animation_length": 0.96,
+			"bones": {
+				"Tail": {
+					"rotation": {
+						"0.0": [0, 0, 2],
+						"0.44": [0, 0, -2],
+						"0.92": [0, 0, 2]
+					}
+				},
+				"Head": {
+					"rotation": {
+						"0.0": [1.2, 0, 0],
+						"0.44": [-1.2, 0, 0],
+						"0.92": [1.2, 0, 0]
+					}
+				}
+			}
+		},
+		"sit": {
+			"loop": true,
+			"animation_length": 0.12,
+			"bones": {
+				"Tail": {
+					"rotation": [47.5, 0, 0]
+				},
+				"Head": {
+					"rotation": [90, 0, 0]
+				},
+				"Front_leg_left": {
+					"rotation": [0, 0, 0]
+				},
+				"Front_leg_right": {
+					"rotation": [0, 0, 0]
+				},
+				"florret": {
+					"rotation": [-90, 0, 0],
+					"position": [0, -3, 0]
+				}
+			}
+		},
+		"sleeping": {
+			"loop": true,
+			"animation_length": 1.28,
+			"bones": {
+				"Tail": {
+					"rotation": [32.5, -2.5, 90]
+				},
+				"bone": {
+					"rotation": [12.5, 0, 0]
+				},
+				"florret": {
+					"rotation": [0, 0, 0],
+					"position": [0, -3, 0]
+				},
+				"Back_leg_right": {
+					"rotation": [-90, 140, 0]
+				},
+				"Back_leg_left": {
+					"rotation": [-90, -140, 0]
+				},
+				"Front_leg_right": {
+					"rotation": [-95, 55, 0]
+				},
+				"Front_leg_left": {
+					"rotation": [-95, -55, 0]
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
