@@ -20,5 +20,9 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.JUNGLE_SERPENT_ENTITY.get(), JungleSerpentEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BEAST_DOG_ENTITY.get(), BeastDogRender::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CRESTED_CRIKESTREAKER_ENTITY.get(), CrestedCrikestreakerRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.ADDER_BACK_ENTITY.get(), AdderBackEntityRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLORRET_ENTITY.get(), FlorretEntityRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.COSMIC_WHALE_ENTITY.get(), CosmicWhaleEntityRender::new);
+
     }
 }

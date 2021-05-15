@@ -24,13 +24,13 @@ public class ModEntityTypes {
                     .build(new ResourceLocation(LeesCreatures.MOD_ID, "souleuron_entity").toString()));
 
     public static final RegistryObject<EntityType<CrystalWyvernEntity>> CRYSTAL_WYVERN_ENTITY = ENTITY_TYPES
-            .register("crystal_wyvern_entity",() -> EntityType.Builder.<CrystalWyvernEntity>create(CrystalWyvernEntity::new, EntityClassification.MONSTER)
+            .register("crystal_wyvern_entity",() -> EntityType.Builder.<CrystalWyvernEntity>create(CrystalWyvernEntity::new, EntityClassification.CREATURE)
                     .size(0.9f,1.6f)
                     .build(new ResourceLocation(LeesCreatures.MOD_ID, "crystal_wyvern_entity").toString()));
 
 
     public static final RegistryObject<EntityType<JungleSerpentEntity>> JUNGLE_SERPENT_ENTITY = ENTITY_TYPES
-            .register("jungle_serpent_entity",() -> EntityType.Builder.<JungleSerpentEntity>create(JungleSerpentEntity::new, EntityClassification.MONSTER)
+            .register("jungle_serpent_entity",() -> EntityType.Builder.<JungleSerpentEntity>create(JungleSerpentEntity::new, EntityClassification.CREATURE)
                     .size(1.23f,1.10f)
                     .build(new ResourceLocation(LeesCreatures.MOD_ID, "jungle_serpent_entity").toString()));
 
@@ -43,4 +43,20 @@ public class ModEntityTypes {
             .register("crested_crikestreaker_entity",() -> EntityType.Builder.<CrestedCrikestreakerEntity>create(CrestedCrikestreakerEntity::new, EntityClassification.CREATURE)
                     .size(0.9f,1.11f)
                     .build(new ResourceLocation(LeesCreatures.MOD_ID, "crested_crikestreaker_entity").toString()));
+
+    public static final RegistryObject<EntityType<AdderBackEntity>> ADDER_BACK_ENTITY = ENTITY_TYPES
+            .register("adder_back_entity",() -> EntityType.Builder.<AdderBackEntity>create(AdderBackEntity::new, EntityClassification.CREATURE)
+                    .size(0.9f,1.10f)
+                    .build(new ResourceLocation(LeesCreatures.MOD_ID, "adder_back_entity").toString()));
+
+    public static final RegistryObject<EntityType<FlorretEntity>> FLORRET_ENTITY = ENTITY_TYPES
+            .register("florret_entity",() -> EntityType.Builder.<FlorretEntity>create(FlorretEntity::new, EntityClassification.CREATURE)
+                    .size(0.2f,1.3f)
+                    .build(new ResourceLocation(LeesCreatures.MOD_ID, "florret_entity").toString()));
+
+    public static final RegistryObject<EntityType<CosmicWhaleEntity>> COSMIC_WHALE_ENTITY = ENTITY_TYPES
+            .register("cosmic_whale_entity",() -> EntityType.Builder.<CosmicWhaleEntity>create(CosmicWhaleEntity::new, EntityClassification.CREATURE)
+                    .size(0.2f,1.3f)
+                    .build(new ResourceLocation(LeesCreatures.MOD_ID, "cosmic_whale_entity").toString()));
+
 }

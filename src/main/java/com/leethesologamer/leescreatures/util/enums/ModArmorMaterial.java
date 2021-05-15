@@ -19,7 +19,7 @@ public enum ModArmorMaterial implements IArmorMaterial {
             SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.2f, 0.1f, ()-> { return Ingredient.fromItems(ModItems.BEASTLY_HIDE.get());
     }),
 
-    JUNGLE_SERPENT_ARMOR(LeesCreatures.MOD_ID + ":jungle_serpent_armor", 31, new int[] {3,6,7,3},18,
+    JUNGLE_SERPENT_ARMOR(LeesCreatures.MOD_ID + ":jungle_serpent_armor", 31, new int[] {2,6,7,2},18,
             SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 1.9f, 0.1f, ()-> { return Ingredient.fromItems(ModItems.JUNGLE_SERPENT_SCALES.get());
     }),
 
@@ -27,9 +27,34 @@ public enum ModArmorMaterial implements IArmorMaterial {
             SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 2.2f, 0.1f, ()-> { return Ingredient.fromItems(ModItems.GREEMANAR_INGOT.get());
     }),
 
-    DURANTIUM(LeesCreatures.MOD_ID + ":durantium", 38, new int[] {3,8,9,4},19,
+    DURANTIUM(LeesCreatures.MOD_ID + ":durantium", 38, new int[] {4,7,9,4},19,
             SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.2f, 0.2f, ()-> { return Ingredient.fromItems(ModItems.DURANTIUM_INGOT.get());
+    }),
+
+    CRYSTAL_WYVERN_ARMOR(LeesCreatures.MOD_ID + ":light_blue_crystal_wyvern_armor", 38, new int[] {4,8,9,5},19,
+    SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.3f, 0.2f, ()-> { return Ingredient.fromItems(ModItems.LIGHT_BLUE_CRYSTAL_WHYVERN_SCALES.get());
+    }),
+
+    BLUE_CRYSTAL_WYVERN_ARMOR(LeesCreatures.MOD_ID + ":crystal_wyvern_armor", 38, new int[] {4,8,9,5},19,
+    SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.3f, 0.2f, ()-> { return Ingredient.fromItems(ModItems.BLUE_CRYSTAL_WHYVERN_SCALES.get());
+    }),
+
+    PURPLE_CRYSTAL_WYVERN_ARMOR(LeesCreatures.MOD_ID + ":purple_crystal_wyvern_armor", 38, new int[] {4,8,9,5},19,
+    SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.3f, 0.2f, ()-> { return Ingredient.fromItems(ModItems.PURPLE_CRYSTAL_WHYVERN_SCALES.get());
+    }),
+
+    PINK_CRYSTAL_WYVERN_ARMOR(LeesCreatures.MOD_ID + ":pink_crystal_wyvern_armor", 38, new int[] {4,8,9,5},19,
+    SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.3f, 0.2f, ()-> { return Ingredient.fromItems(ModItems.PINK_CRYSTAL_WHYVERN_SCALES.get());
+    }),
+
+    VOILET_CRYSTAL_WYVERN_ARMOR(LeesCreatures.MOD_ID + ":voilet_crystal_wyvern_armor", 38, new int[] {4,8,9,5},19,
+    SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.3f, 0.2f, ()-> { return Ingredient.fromItems(ModItems.VOILET_CRYSTAL_WHYVERN_SCALES.get());
+    }),
+
+    WHITE_CRYSTAL_WYVERN_ARMOR(LeesCreatures.MOD_ID + ":white_crystal_wyvern_armor", 38, new int[] {4,8,9,5},19,
+    SoundEvents.ITEM_ARMOR_EQUIP_GENERIC, 3.3f, 0.2f, ()-> { return Ingredient.fromItems(ModItems.WHITE_CRYSTAL_WHYVERN_SCALES.get());
     });
+
 
     private static final int[] MAX_DAMAGE_ARRAY = new int[] {11, 16, 15, 13 };
     private final String name;

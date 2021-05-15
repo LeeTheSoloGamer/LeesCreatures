@@ -16,11 +16,11 @@ public class OreGeneration {
     public static void generateOres(final BiomeLoadingEvent event) {
         if (!(event.getCategory().equals(Biome.Category.NETHER) || event.getCategory().equals(Biome.Category.THEEND))) {
             generateOre(event.getGeneration(), OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD,
-                    ModBlocks.DURANTIUM_ORE.get().getDefaultState(), 3, 10, 27, 4);
+                    ModBlocks.DURANTIUM_ORE.get().getDefaultState(), 3, 5, 12, 3);
         }
         if (!(event.getCategory().equals(Biome.Category.NETHER) || event.getCategory().equals(Biome.Category.THEEND))) {
             generateOre(event.getGeneration(), OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD,
-                    ModBlocks.GREEMANAR_ORE.get().getDefaultState(), 5, 20, 32, 6);
+                    ModBlocks.GREEMANAR_ORE.get().getDefaultState(), 4, 19, 27, 4);
         }
     }
 

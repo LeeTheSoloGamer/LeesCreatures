@@ -27,10 +27,10 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class SouleuronEntity extends AnimalEntity implements IAnimatable {
+public class CosmicWhaleEntity extends AnimalEntity implements IAnimatable {
     private int exampleTimer;
 
-    public SouleuronEntity(EntityType<SouleuronEntity> entityType, World worldIn) {
+    public CosmicWhaleEntity(EntityType<CosmicWhaleEntity> entityType, World worldIn) {
         super(entityType, worldIn);
 
     }
@@ -39,7 +39,7 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("walking", true));
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("swiming", true));
             return PlayState.CONTINUE;
         }else
             event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
@@ -81,7 +81,7 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
 
     }
 
-    public static boolean canSouleuronSpawn(EntityType<SouleuronEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn ){
+    public static boolean canCosmicWhaleSpawn(EntityType<CosmicWhaleEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn ){
         return worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
@@ -95,7 +95,7 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<SouleuronEntity>(this, "controller", 0,this::predicate));
+        animationData.addAnimationController(new AnimationController<CosmicWhaleEntity>(this, "controller", 0,this::predicate));
     }
 
     @Override

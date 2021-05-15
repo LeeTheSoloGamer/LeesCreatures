@@ -9,11 +9,31 @@ import java.util.function.Supplier;
 public enum ModItemTier implements IItemTier {
 
 
-    DURANTIUM( 3, 1700, 8.0f,3.0f, 12, ()->{
+    DURANTIUM( 3, 2031, 8.0f,2.0f, 12, ()->{
         return Ingredient.fromItems(ModItems.DURANTIUM_SWORD.get());
     }),
 
-    GREEMANAR( 3, 1500, 6.0f,2.0f, 12, ()->{
+    DURANTIUM_AXE( 3, 1561, 8.0f,5.0f, 12, ()->{
+        return Ingredient.fromItems(ModItems.DURANTIUM_AXE.get());
+    }),
+
+    DURANTIUM_SHOVEL( 3, 2031, 8.0f,4.0f, 12, ()->{
+        return Ingredient.fromItems(ModItems.DURANTIUM_SHOVEL.get());
+    }),
+
+    DURANTIUM_HOE( 3, 2031, 8.0f,1.0f, 12, ()->{
+        return Ingredient.fromItems(ModItems.DURANTIUM_HOE.get());
+    }),
+
+    DAGGER( 2, 250, 5.0f,2.3f, 10, ()->{
+        return Ingredient.fromItems(ModItems.SERPENT_FANG_DAGGER.get());
+    }),
+
+    POISON_DAGGER( 2, 250, 5.0f,2.3f, 10, ()->{
+        return Ingredient.fromItems(ModItems.SERPENT_FANG_DAGGER.get());
+    }),
+
+    GREEMANAR( 3, 1500, 6.0f,3.9f, 12, ()->{
         return Ingredient.fromItems(ModItems.GREEMANAR_LONG_SWORD.get());
     });
 
@@ -63,4 +83,5 @@ public enum ModItemTier implements IItemTier {
     public Ingredient getRepairMaterial() {
         return repairMaterial.get();
     }
+
 }

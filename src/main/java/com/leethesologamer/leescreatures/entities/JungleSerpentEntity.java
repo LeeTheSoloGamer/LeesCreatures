@@ -1,27 +1,38 @@
 package com.leethesologamer.leescreatures.entities;
 
+import javax.annotation.Nullable;
+
+import com.leethesologamer.leescreatures.entities.flying.ai.SwimerPathNavigator;
+import com.leethesologamer.leescreatures.entities.flying.ai.WaterMoveController;
 import com.leethesologamer.leescreatures.init.ModItems;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -35,30 +46,43 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nullable;
+import java.util.Random;
 
 public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
-    private static final DataParameter<Boolean> STRIKING = EntityDataManager.createKey(JungleSerpentEntity.class,
-            DataSerializers.BOOLEAN);
-
+    private static final DataParameter<Boolean> STRIKING = EntityDataManager.createKey(JungleSerpentEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(CrystalWyvernEntity.class, DataSerializers.BOOLEAN);
     private int exampleTimer;
+    private boolean isLandNavigator;
 
     public JungleSerpentEntity(EntityType<JungleSerpentEntity> entityType, World worldIn) {
         super(entityType, worldIn);
+        this.setPathPriority(PathNodeType.WATER, 0.1F);
         this.setTamed(false);
+        this.setSitting(false);
+        switchNavigator(false);
+        this.stepHeight = 1.0F;
     }
 
     private AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving() && !this.dataManager.get(STRIKING)) {
+        if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("slithering", true));
             return PlayState.CONTINUE;
         }
-        if ((this.dataManager.get(STRIKING))) {
+        if (this.isInWater() && this.dataManager.get(STRIKING)) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("water_attacking", true));
+            return PlayState.CONTINUE;
+        }
+        else if (this.dataManager.get(STRIKING)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attacking", true));
             return PlayState.CONTINUE;
-        }else
+        }
+        else if (this.dataManager.get(SITTING)) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
+            return PlayState.CONTINUE;
+        }
+        else
             event.getController().setAnimation(new AnimationBuilder().addAnimation("idle", true));
         return PlayState.CONTINUE;
     }
@@ -66,12 +90,12 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new JungleSerpentEntity.StrikeAttackGoal());
-        this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(4, new LookRandomlyGoal(this));
-        this.goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.5D));
+        this.goalSelector.addGoal(1, new SitGoal(this));
+        this.goalSelector.addGoal(2, new StrikeAttackGoal());
+        this.goalSelector.addGoal(3, new FollowOwnerGoal(this, 1.5D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(4, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(5, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(6, new RandomWalkingGoal(this, 1.5D));
         this.applyEntityAI();
     }
 
@@ -82,6 +106,7 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
         this.targetSelector.addGoal(4, (new HurtByTargetGoal(this)).setCallsForHelp());
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, AnimalEntity.class, true));
+        this.targetSelector.addGoal(6, new NearestAttackableTargetGoal<>(this, AbstractFishEntity.class, true));
     }
 
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
@@ -101,6 +126,17 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
         super.livingTick();
     }
 
+    public void tick() {
+        super.tick();
+        boolean ground = !this.isInWater();
+        if (!ground && this.isLandNavigator) {
+            switchNavigator(false);
+        }
+        if (ground && !this.isLandNavigator) {
+            switchNavigator(true);
+        }
+    }
+
     @OnlyIn(Dist.CLIENT)
     public void handleStatusUpdate(byte id) {
         if (id == 10) {
@@ -108,7 +144,6 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
         } else {
             super.handleStatusUpdate(id);
         }
-
     }
 
     public int getMaxSpawnedInChunk() {
@@ -120,9 +155,22 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
         return 3;
     }
 
+    public static boolean canJungleSerpentEntitySpawn( EntityType<JungleSerpentEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn ){
+        BlockState blockstate = worldIn.getBlockState(pos.down());
+        return (worldIn.hasWater(pos)) || (blockstate.isIn(Blocks.WATER)) || (blockstate.isIn(Blocks.GRASS_BLOCK)) || (blockstate.isIn(BlockTags.LEAVES)) && worldIn.getLightSubtracted(pos, 0) > 8;
+    }
+
     @Override
     public void registerControllers(AnimationData animationData) {
         animationData.addAnimationController(new AnimationController<JungleSerpentEntity>(this, "controller", 0,this::predicate));
+    }
+
+    public boolean isPushedByWater() {
+        return false;
+    }
+
+    public boolean canBreatheUnderwater() {
+        return true;
     }
 
     @Override
@@ -145,6 +193,19 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
     protected void registerData() {
         super.registerData();
         this.dataManager.register(STRIKING, false);
+        this.dataManager.register(SITTING, false);
+    }
+
+    private void switchNavigator(boolean onLand) {
+        if (onLand) {
+            this.moveController = new MovementController(this);
+            this.navigator = new GroundPathNavigator(this, world);
+            this.isLandNavigator = true;
+        } else {
+            this.moveController = new WaterMoveController(this, 1F);
+            this.navigator = new SwimerPathNavigator(this, world);
+            this.isLandNavigator = false;
+        }
     }
 
     public boolean isNotColliding(IWorldReader worldIn) {
@@ -164,15 +225,36 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
         this.dataManager.set(STRIKING,striking);
     }
 
+    public boolean isSitting() {
+        return this.dataManager.get(SITTING);
+    }
+
+    //sit bitch and dont let me have to tell you again
+    public void setSitting(boolean sitting) {
+        this.dataManager.set(SITTING, sitting);
+    }
+
+    public void clearAI()
+    {
+        isJumping = false;
+        navigator.clearPath();
+        setAttackTarget(null);
+        setRevengeTarget(null);
+        setMoveForward(0);
+        setMoveVertical(0);
+    }
+
+
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("Striking", this.isStriking());
-
+        compound.putBoolean("Sitting", this.isSitting());
     }
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setStriking(compound.getBoolean("Striking"));
+        this.setSitting(compound.getBoolean("Sitting"));
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -184,6 +266,18 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
         }
     }
 
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return source == DamageSource.DROWN || source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+    }
+
+    public boolean isPotionApplicable(EffectInstance potioneffectIn) {
+        if (potioneffectIn.getPotion() == Effects.POISON) {
+            return false;
+        }
+        return super.isPotionApplicable(potioneffectIn);
+    }
+
     public boolean attackEntityAsMob(Entity entityIn) {
         if (super.attackEntityAsMob(entityIn)) {
             if (entityIn instanceof LivingEntity) {
@@ -193,7 +287,7 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
                 } else if (this.world.getDifficulty() == Difficulty.HARD) {
                     i = 20;
                 }
-                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, i * 24, 0));
+                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, i * 24, 1));
             }
 
             return true;
@@ -219,55 +313,39 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
         }
     }
 
-    public ActionResultType func_230254_b_(PlayerEntity p_230254_1_, Hand p_230254_2_) {
-        ItemStack itemstack = p_230254_1_.getHeldItem(p_230254_2_);
+    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+        ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
-        if (this.world.isRemote) {
-            boolean flag = this.isOwner(p_230254_1_) || this.isTamed() || item == ModItems.CRESTED_CRIKESTREAKER_EGG.get() && !this.isTamed();
-            return flag ? ActionResultType.CONSUME : ActionResultType.PASS;
-        } else {
-            if (this.isTamed()) {
-                if (this.isBreedingItem(itemstack) && this.getHealth() < this.getMaxHealth()) {
-                    if (!p_230254_1_.abilities.isCreativeMode) {
-                        itemstack.shrink(1);
-                    }
+        ActionResultType type = super.func_230254_b_(player, hand);
+        if (!isTamed() && item == ModItems.CRESTED_CRIKESTREAKER_EGG.get()) {
+            this.consumeItemFromStack(player, itemstack);
+            this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
+            if (getRNG().nextInt(3) == 0) {
+                this.setTamedBy(player);
+                this.world.setEntityState(this, (byte) 7);
+            } else {
+                this.world.setEntityState(this, (byte) 6);
+            }
+            return ActionResultType.SUCCESS;
+        }
 
-                    this.heal((float)item.getFood().getHealing());
-                    return ActionResultType.SUCCESS;
-                }
-
-                if (!(item instanceof DyeItem)) {
-                    ActionResultType actionresulttype = super.func_230254_b_(p_230254_1_, p_230254_2_);
-                    if ((!actionresulttype.isSuccessOrConsume() || this.isChild()) && this.isOwner(p_230254_1_)) {
-                        this.func_233687_w_(!this.isSitting());
-                        this.navigator.clearPath();
-                        this.setAttackTarget((LivingEntity)null);
-                        return ActionResultType.SUCCESS;
-                    }
-
-                    return actionresulttype;
-                }
-
-            } else if (item == ModItems.CRESTED_CRIKESTREAKER_EGG.get() ) {
-                if (!p_230254_1_.abilities.isCreativeMode) {
-                    itemstack.shrink(1);
-                }
-
-                if (this.rand.nextInt(5) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, p_230254_1_)) {
-                    this.setTamedBy(p_230254_1_);
-                    this.navigator.clearPath();
-                    this.setAttackTarget((LivingEntity)null);
-                    this.func_233687_w_(true);
-                    this.world.setEntityState(this, (byte)7);
-                } else {
-                    this.world.setEntityState(this, (byte)6);
-                }
-
+        if (isTamed() && item == ModItems.CRESTED_CRIKESTREAKER_EGG.get() && this.getHealth() < this.getMaxHealth()) {
+            this.heal(5);
+            this.consumeItemFromStack(player, itemstack);
+            this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
+            return ActionResultType.SUCCESS;
+        }
+        if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
+            if (this.isSitting()) {
+                this.setSitting(false);
+                return ActionResultType.SUCCESS;
+            } else {
+                this.clearAI();
+                this.setSitting(true);
                 return ActionResultType.SUCCESS;
             }
-
-            return super.func_230254_b_(p_230254_1_, p_230254_2_);
         }
+        return type;
     }
 
     public boolean isOnSameTeam(Entity entityIn) {
@@ -321,6 +399,17 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
             return 3.0F + attackTarget.getWidth();
         }
     }
+
+    public void travel(Vector3d travelVector) {
+        if (this.isServerWorld() && this.isInWater()) {
+            this.moveRelative(this.getAIMoveSpeed(), travelVector);
+            this.move(MoverType.SELF, this.getMotion());
+            this.setMotion(this.getMotion().scale(0.9D));
+            if (this.getAttackTarget() == null) {
+                this.setMotion(this.getMotion().add(0.0D, -0.005D, 0.0D));
+            }
+        } else {
+            super.travel(travelVector);
+        }
+    }
 }
-
-

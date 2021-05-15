@@ -21,6 +21,11 @@ public class ModBlocks {
                     .hardnessAndResistance(5.0f, 6.0f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
                     .sound(SoundType.METAL).setRequiresTool()));
 
+    public static final RegistryObject<Block> CRYSTAL_BLOCK = BLOCKS
+            .register("crystal_block", () -> new Block(AbstractBlock.Properties.create(Material.ICE)
+                    .hardnessAndResistance(3.0f, 4.0f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
+                    .sound(SoundType.GLASS).setRequiresTool()));
+
     public static final RegistryObject<Block> GREEMANAR_BLOCK = BLOCKS
             .register("greemanar_block", () -> new Block(AbstractBlock.Properties.create(Material.IRON)
                     .hardnessAndResistance(3.0f, 4.0f).harvestTool(ToolType.PICKAXE).harvestLevel(3)
@@ -31,5 +36,5 @@ public class ModBlocks {
             () -> new Block(AbstractBlock.Properties.from(Blocks.OBSIDIAN)));
 
     public static final RegistryObject<Block> GREEMANAR_ORE = BLOCKS.register("greemanar_ore",
-            () -> new Block(AbstractBlock.Properties.from(Blocks.IRON_ORE)));
+            () -> new Block(AbstractBlock.Properties.from(Blocks.OBSIDIAN)));
 }

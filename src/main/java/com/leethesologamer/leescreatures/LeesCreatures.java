@@ -1,6 +1,7 @@
 package com.leethesologamer.leescreatures;
 
 import com.leethesologamer.leescreatures.entities.*;
+import com.leethesologamer.leescreatures.init.ModSoundEventTypes;
 import com.leethesologamer.leescreatures.world.ModEntitySpawing;
 import com.leethesologamer.leescreatures.world.OreGeneration;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -28,7 +29,7 @@ import software.bernie.geckolib3.GeckoLib;
 
 
 @Mod(LeesCreatures.MOD_ID)
-public class LeesCreatures {
+public class  LeesCreatures {
 
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "leescreatures";
@@ -43,6 +44,7 @@ public class LeesCreatures {
         ModBlocks.BLOCKS.register(bus);
         ModItems.ITEMS.register(bus);
         ModEntityTypes.ENTITY_TYPES.register(bus);
+        ModSoundEventTypes.SOUND_EVENTS.register(bus);
         MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, OreGeneration::generateOres);
         MinecraftForge.EVENT_BUS.addListener(this::onBiomeLoad);
 
@@ -62,7 +64,11 @@ public class LeesCreatures {
             GlobalEntityTypeAttributes.put(ModEntityTypes.JUNGLE_SERPENT_ENTITY.get(), JungleSerpentEntity.registerAttributes().create());
             GlobalEntityTypeAttributes.put(ModEntityTypes.BEAST_DOG_ENTITY.get(), BeastDogEntity.registerAttributes().create());
             GlobalEntityTypeAttributes.put(ModEntityTypes.CRESTED_CRIKESTREAKER_ENTITY.get(), CrestedCrikestreakerEntity.registerAttributes().create());
+            GlobalEntityTypeAttributes.put(ModEntityTypes.ADDER_BACK_ENTITY.get(), AdderBackEntity.registerAttributes().create());
+            GlobalEntityTypeAttributes.put(ModEntityTypes.FLORRET_ENTITY.get(), FlorretEntity.registerAttributes().create());
+            GlobalEntityTypeAttributes.put(ModEntityTypes.COSMIC_WHALE_ENTITY.get(), CosmicWhaleEntity.registerAttributes().create());
          });
+        ModEntitySpawing.entitySpawnPlacementRegistry();
     }
     private void doClientStuff(final FMLClientSetupEvent event) {
 

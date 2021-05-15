@@ -27,10 +27,10 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class SouleuronEntity extends AnimalEntity implements IAnimatable {
+public class AdderBackEntity extends AnimalEntity implements IAnimatable {
     private int exampleTimer;
 
-    public SouleuronEntity(EntityType<SouleuronEntity> entityType, World worldIn) {
+    public AdderBackEntity(EntityType<AdderBackEntity> entityType, World worldIn) {
         super(entityType, worldIn);
 
     }
@@ -50,7 +50,6 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 1.D));
         this.goalSelector.addGoal(2, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 1.D));
@@ -81,7 +80,7 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
 
     }
 
-    public static boolean canSouleuronSpawn(EntityType<SouleuronEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn ){
+    public static boolean canAdderBackEntitySpawn(EntityType<AdderBackEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn ){
         return worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
@@ -95,7 +94,7 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<SouleuronEntity>(this, "controller", 0,this::predicate));
+        animationData.addAnimationController(new AnimationController<AdderBackEntity>(this, "controller", 0,this::predicate));
     }
 
     @Override
@@ -105,7 +104,7 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     public boolean canBeLeashedTo(PlayerEntity player) {
-        return true;
+        return super.canBeLeashedTo(player);
     }
 
     @Override

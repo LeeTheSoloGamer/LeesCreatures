@@ -1,23 +1,51 @@
 package com.leethesologamer.leescreatures.entities;
 
+import java.util.Random;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.leethesologamer.leescreatures.entities.flying.ai.TamedAiRide;
+
+import com.leethesologamer.leescreatures.init.ModItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.ai.goal.BreedGoal;
+import net.minecraft.entity.ai.goal.EatGrassGoal;
+import net.minecraft.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.entity.ai.goal.FollowParentGoal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
+import net.minecraft.entity.ai.goal.SitGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.TemptGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.*;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -31,12 +59,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nullable;
-import java.util.UUID;
-
 public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimatable{
     private static final DataParameter<Boolean> BUCKING = EntityDataManager.createKey(BoarlinEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> ANGER_TIME = EntityDataManager.createKey(BoarlinEntity.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> SITTING = EntityDataManager.createKey(BoarlinEntity.class, DataSerializers.BOOLEAN);
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.fromItems(Items.WHEAT, Items.POTATO, Items.BEETROOT);
     private EatGrassGoal eatGrassGoal;
     private int exampleTimer;
@@ -51,12 +77,16 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
     private AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving() && !this.dataManager.get(BUCKING)) {
+        if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walking", true));
             return PlayState.CONTINUE;
         }
-        if (this.dataManager.get(BUCKING)) {
+        else if (this.dataManager.get(BUCKING)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attacking", true));
+            return PlayState.CONTINUE;
+        }
+        else if (this.dataManager.get(SITTING)) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("sitting", true));
             return PlayState.CONTINUE;
         }
         else
@@ -69,8 +99,9 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
         super.registerGoals();
         this.eatGrassGoal = new EatGrassGoal(this);
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new BoarlinEntity.BuckingGoal());
-        this.goalSelector.addGoal(1, new TamedAiRide(this, 1.D));
+        this.goalSelector.addGoal(0, new SitGoal(this));
+        this.goalSelector.addGoal(1, new BuckingGoal());
+        this.goalSelector.addGoal(1, new TamedAiRide(this, 1.1D));
         this.goalSelector.addGoal(2, new FollowOwnerGoal(this, 1.1D, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 0.3));
@@ -130,12 +161,21 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
     }
 
     public int getMaxSpawnedInChunk() {
-        return 6;
+        return 3;
     }
 
     @Override
     public void registerControllers(AnimationData animationData) {
         animationData.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    }
+
+    public static boolean canBoarlinEntitySpawn(EntityType<BoarlinEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn ){
+        return worldIn.getLightSubtracted(pos, 0) > 8;
+    }
+
+    public boolean isBreedingItem(ItemStack stack) {
+        Item item = stack.getItem();
+        return isTamed() && item == Items.WHEAT;
     }
 
     public boolean isNotColliding(IWorldReader worldIn) {
@@ -163,6 +203,7 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
         super.registerData();
         this.dataManager.register(BUCKING, false);
         this.dataManager.register(ANGER_TIME, 0);
+        this.dataManager.register(SITTING, false);
     }
 
     public boolean isBucking() {
@@ -173,15 +214,36 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
         this.dataManager.set(BUCKING, bucking);
     }
 
+    public boolean isSitting() {
+        return this.dataManager.get(SITTING);
+    }
+
+    //looks like it needs a belly rub
+    public void setSitting(boolean sitting) {
+        this.dataManager.set(SITTING, sitting);
+    }
+
+    public void clearAI()
+    {
+        isJumping = false;
+        navigator.clearPath();
+        setAttackTarget(null);
+        setRevengeTarget(null);
+        setMoveForward(0);
+        setMoveVertical(0);
+    }
+
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean("Bucking", this.isBucking());
+        compound.putBoolean("Sitting", this.isSitting());
 
     }
 
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         this.setBucking(compound.getBoolean("Bucking"));
+        this.setSitting(compound.getBoolean("Sitting"));
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
@@ -253,7 +315,6 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
         return SoundEvents.ENTITY_PIG_AMBIENT;
     }
 
-
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
         return SoundEvents.ENTITY_PIG_HURT;
@@ -304,25 +365,38 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
         ItemStack itemstack = player.getHeldItem(hand);
         Item item = itemstack.getItem();
         ActionResultType type = super.func_230254_b_(player, hand);
-
-        if(item == Items.WHEAT && !isTamed()){
-            int size = itemstack.getCount();
-            int tameAmount = 58 + rand.nextInt(16);
-            if(size > tameAmount){
+        if (!isTamed() && item == Items.WHEAT) {
+            this.consumeItemFromStack(player, itemstack);
+            this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
+            if (getRNG().nextInt(16) == 0) {
                 this.setTamedBy(player);
+                this.world.setEntityState(this, (byte) 7);
+            } else {
+                this.world.setEntityState(this, (byte) 6);
             }
-            itemstack.shrink(size);
             return ActionResultType.SUCCESS;
         }
-        if(type != ActionResultType.SUCCESS && isTamed() && isOwner(player)){
-            if(isBreedingItem(itemstack)){
-                this.setInLove(600);
-                this.consumeItemFromStack(player, itemstack);
-                return ActionResultType.SUCCESS;
-            }
-            if(!player.isSneaking() && !isBreedingItem(itemstack)){
+
+        if (isTamed() && item == Items.WHEAT && this.getHealth() < this.getMaxHealth()) {
+            this.heal(6);
+            this.consumeItemFromStack(player, itemstack);
+            this.playSound(SoundEvents.ENTITY_GENERIC_EAT, this.getSoundVolume(), this.getSoundPitch());
+            return ActionResultType.SUCCESS;
+        }
+        if (type != ActionResultType.SUCCESS && isTamed() && isOwner(player) && !isBreedingItem(itemstack)) {
+            if(!player.isSneaking()){
                 player.startRiding(this);
+                setAttackTarget(null);
                 return ActionResultType.SUCCESS;
+            }else{
+                if (this.isSitting()) {
+                    this.setSitting(false);
+                    return ActionResultType.SUCCESS;
+                } else {
+                    this.clearAI();
+                    this.setSitting(true);
+                    return ActionResultType.SUCCESS;
+                }
             }
         }
         return type;
@@ -379,4 +453,3 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
         }
     }
 }
-

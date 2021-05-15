@@ -9,6 +9,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 @OnlyIn(Dist.CLIENT)
 public class CrestedCrikestreakerModel extends AnimatedGeoModel<CrestedCrikestreakerEntity> {
+
     @Override
     public ResourceLocation getModelLocation(CrestedCrikestreakerEntity entity) {
         return new ResourceLocation(LeesCreatures.MOD_ID, "geo/crested_crikestreaker_entity.geo.json");

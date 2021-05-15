@@ -1,6 +1,8 @@
 package com.leethesologamer.leescreatures.entities;
 
+import com.leethesologamer.leescreatures.entities.flying.ai.CrikestreakerFollowLeaderAi;
 import com.leethesologamer.leescreatures.init.ModItems;
+import com.leethesologamer.leescreatures.init.ModSoundEventTypes;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -12,10 +14,9 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -27,15 +28,20 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnimatable {
 
     private static final DataParameter<Boolean> ATTACKING = EntityDataManager.createKey(CrestedCrikestreakerEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(CrestedCrikestreakerEntity.class, DataSerializers.VARINT);
-
+    private static final DataParameter<Boolean> LEADER = EntityDataManager.createKey(CrestedCrikestreakerEntity.class, DataSerializers.BOOLEAN);
     private int exampleTimer;
     public int timeUntilNextCrestedEgg = this.rand.nextInt(6000) + 6000;
+    @Nullable
+    private CrestedCrikestreakerEntity caravanHead;
+    @Nullable
+    private CrestedCrikestreakerEntity caravanTail;
 
     public CrestedCrikestreakerEntity(EntityType<CrestedCrikestreakerEntity> entityType, World worldIn) {
         super(entityType, worldIn);
@@ -45,11 +51,11 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
     private AnimationFactory factory = new AnimationFactory(this);
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving() && !this.dataManager.get(ATTACKING)) {
+        if (event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("walking", true));
             return PlayState.CONTINUE;
         }
-        if ((this.dataManager.get(ATTACKING))) {
+        else if (this.dataManager.get(ATTACKING)) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("attacking", true));
             return PlayState.CONTINUE;
         }
@@ -62,10 +68,12 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new CrestedCrikestreakerEntity.AttackGoal());
-        this.goalSelector.addGoal(2, new WaterAvoidingRandomWalkingGoal(this, 1.8D));
-        this.goalSelector.addGoal(3, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(3, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(1, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(2, new AttackGoal());
+        this.goalSelector.addGoal(3, new CrikestreakerFollowLeaderAi(this,1.8));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomWalkingGoal(this, 1.8D));
+        this.goalSelector.addGoal(5, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
         this.applyEntityAI();
     }
 
@@ -79,7 +87,7 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
     public static AttributeModifierMap.MutableAttribute registerAttributes() {
         return MobEntity.func_233666_p_()
                 .createMutableAttribute(Attributes.MAX_HEALTH, 47.0D)
-                .createMutableAttribute(Attributes.FOLLOW_RANGE, 10D)
+                .createMutableAttribute(Attributes.FOLLOW_RANGE, 25D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.45F)
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 13.0D);
     }
@@ -95,6 +103,10 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
             this.entityDropItem(ModItems.CRESTED_CRIKESTREAKER_EGG.get());
             this.timeUntilNextCrestedEgg = this.rand.nextInt(6000) + 6000;
         }
+    }
+
+    public static boolean canCrikestreakerSpawn(EntityType<CrestedCrikestreakerEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn ){
+        return worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -116,6 +128,11 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
     }
 
     @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEventTypes.CRESTED_CRIKESTREAKER_AMBIENT.get();
+    }
+
+    @Override
     public AnimationFactory getFactory() {
         return this.factory;
     }
@@ -125,6 +142,7 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
         super.registerData();
         this.dataManager.register(VARIANT, 0);
         this.dataManager.register(ATTACKING, false);
+        this.dataManager.register(LEADER, false);
     }
 
     @Override
@@ -134,7 +152,7 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
 
     @Override
     public boolean canBeLeashedTo(PlayerEntity player) {
-        return super.canBeLeashedTo(player);
+        return true;
     }
 
     @Override
@@ -163,11 +181,19 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
         this.dataManager.set(ATTACKING, attacking);
     }
 
+    public boolean isLeader() {
+        return this.dataManager.get(LEADER);
+    }
+
+    public void setLeader(boolean leader) {
+        this.dataManager.set(LEADER, leader);
+    }
 
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putInt("Variant", this.getVariant());
         compound.putBoolean("Attacking", this.isAttacking());
+        compound.putBoolean("Leader", this.isLeader());
         compound.putInt("EggDropTime", this.timeUntilNextCrestedEgg);
 
     }
@@ -176,9 +202,36 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
         super.readAdditional(compound);
         this.setVariant(compound.getInt("Variant"));
         this.setAttacking(compound.getBoolean("Attacking"));
+        this.setLeader(compound.getBoolean("Leader"));
         if (compound.contains("EggDropTime")) {
             this.timeUntilNextCrestedEgg = compound.getInt("EggDropTime");
         }
+    }
+
+    public void leaveCaravan() {
+        if (this.caravanHead != null) {
+            this.caravanHead.caravanTail = null;
+        }
+
+        this.caravanHead = null;
+    }
+
+    public void joinCaravan(CrestedCrikestreakerEntity caravanHeadIn) {
+        this.caravanHead = caravanHeadIn;
+        this.caravanHead.caravanTail = this;
+    }
+
+    public boolean hasCaravanTrail() {
+        return this.caravanTail != null;
+    }
+
+    public boolean inCaravan() {
+        return this.caravanHead != null;
+    }
+
+    @Nullable
+    public CrestedCrikestreakerEntity getCaravanHead() {
+        return this.caravanHead;
     }
 
     @Nullable
@@ -187,6 +240,7 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
         Random random = new Random();
         if (random.nextFloat() > 0.9) {
             type = 1;
+            this.setLeader(true);
         } else if (random.nextFloat() > 0.9) {
             type = 2;
         } else {
@@ -194,6 +248,26 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
         }
         this.setVariant(type);
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+    }
+
+    @Nullable
+    public CrestedCrikestreakerEntity getNearestLeader(IWorld world, double dist) {
+        List<CrestedCrikestreakerEntity> list = world.getEntitiesWithinAABB(this.getClass(), this.getBoundingBox().grow(dist, dist / 2, dist));
+        if (list.isEmpty()) {
+            return null;
+        }
+        CrestedCrikestreakerEntity crikestreaker = null;
+        double d0 = Double.MAX_VALUE;
+        for (CrestedCrikestreakerEntity crikestreaker2 : list) {
+            if (crikestreaker2.isLeader()) {
+                double d1 = this.getDistanceSq(crikestreaker2);
+                if (!(d1 > d0)) {
+                    d0 = d1;
+                    crikestreaker = crikestreaker2;
+                }
+            }
+        }
+        return crikestreaker;
     }
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
