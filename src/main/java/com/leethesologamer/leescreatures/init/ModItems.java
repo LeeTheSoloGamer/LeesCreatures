@@ -106,8 +106,8 @@ public class ModItems {
 
 
     //food
-    public static final RegistryObject<Item> BOARLIN_MEAT = ITEMS.register("boarlin_meat",
-            () -> new Item(new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).food(FoodInit.BOARLIN_MEEAT)));
+    public static final RegistryObject<Item> COOKED_BOARLIN = ITEMS.register("cooked_boarlin",
+            () -> new Item(new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).food(FoodInit.COOKED_BOARLIN)));
 
     public static final RegistryObject<Item> RAW_BOARLIN = ITEMS.register("raw_boarlin",
             () -> new Item(new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).food(FoodInit.RAW_BOARLIN)));

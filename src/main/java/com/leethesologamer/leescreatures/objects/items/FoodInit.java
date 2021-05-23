@@ -6,7 +6,7 @@ import net.minecraft.potion.Effects;
 
 public class FoodInit {
 
-    public static final Food BOARLIN_MEEAT = new Food.Builder()
+    public static final Food COOKED_BOARLIN = new Food.Builder()
             .effect(() -> new EffectInstance(Effects.STRENGTH, 300, 1), 1.0f).hunger(8).meat().saturation(1.3f)
             .setAlwaysEdible().build();
 

@@ -65,7 +65,7 @@ public class ModItemModelProvider  extends ItemModelProvider {
         builder(itemGenerated, "white_crystal_wyvern_chestplate");
         builder(itemGenerated, "white_crystal_wyvern_leggings");
         builder(itemGenerated, "white_crystal_wyvern_boots");
-        builder(itemGenerated, "boarlin_meat");
+        builder(itemGenerated, "cooked_boarlin");
         builder(itemGenerated, "raw_boarlin");
         builder(itemGenerated, "jungle_serpent_fang");
         builder(itemGenerated, "durantium_ingot");

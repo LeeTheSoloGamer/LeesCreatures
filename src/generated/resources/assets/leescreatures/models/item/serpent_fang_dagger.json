@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "leescreatures:item/serpent_fang_dagger"
+  }
+}

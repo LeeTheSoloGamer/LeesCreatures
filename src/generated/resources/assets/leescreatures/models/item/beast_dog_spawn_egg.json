@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "leescreatures:item/beast_dog_spawn_egg"
+  }
+}
