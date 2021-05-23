@@ -65,9 +65,58 @@ public class ModItemModelProvider  extends ItemModelProvider {
         builder(itemGenerated, "white_crystal_wyvern_chestplate");
         builder(itemGenerated, "white_crystal_wyvern_leggings");
         builder(itemGenerated, "white_crystal_wyvern_boots");
+        builder(itemGenerated, "boarlin_meat");
+        builder(itemGenerated, "raw_boarlin");
+        builder(itemGenerated, "jungle_serpent_fang");
+        builder(itemGenerated, "durantium_ingot");
+        builder(itemGenerated, "coin");
+        builder(itemGenerated, "durantium_steel");
+        builder(itemGenerated, "durantium_rod");
+        builder(itemGenerated, "durantium_nugget");
+        builder(itemGenerated, "undead_essence");
+        builder(itemGenerated, "bottled_undead_essence");
+        builder(itemGenerated, "rotten_bone");
+        builder(itemGenerated, "greemanar_ingot");
+        builder(itemGenerated, "poisonous_gland");
+        builder(itemGenerated, "crested_crikestreaker_egg");
+        builder(itemGenerated, "crested_crikestreaker_feather");
+        builder(itemGenerated, "jeweled_egg");
+        builder(itemGenerated, "jungle_serpent_scales");
+        builder(itemGenerated, "beastly_hide");
+        builder(itemGenerated, "bottle_of_poison");
+        builder(itemGenerated, "crystal");
+        builder(itemGenerated, "blue_crystal");
+        builder(itemGenerated, "pink_crystal");
+        builder(itemGenerated, "purple_crystal");
+        builder(itemGenerated, "white_crystal");
+        builder(itemGenerated, "voilet_crystal");
+        builder(itemGenerated, "blue_crystal_wyvern_scales");
+        builder(itemGenerated, "light_blue_crystal_wyvern_scales");
+        builder(itemGenerated, "purple_crystal_wyvern_scales");
+        builder(itemGenerated, "pink_crystal_wyvern_scales");
+        builder(itemGenerated, "voilet_crystal_wyvern_scales");
+        builder(itemGenerated, "white_crystal_wyvern_scales");
+        builder(itemGenerated, "boarlin_spawn_egg");
+        builder(itemGenerated, "souleuron_spawn_egg");
+        builder(itemGenerated, "crystal_wyvern_spawn_egg");
+        builder(itemGenerated, "jungle_serpent_spawn_egg");
+        builder(itemGenerated, "beast_dog_spawn_egg");
+        builder(itemGenerated, "creasted_crikestreaker_spawn_egg");
+        builder(itemGenerated, "florret_spawn_egg");
 
 
 
+
+
+        //tools
+        tool(itemhandHeld, "durantium_sword");
+        tool(itemhandHeld, "serpent_fang_dagger");
+        tool(itemhandHeld, "poison_fang_dagger");
+        tool(itemhandHeld, "greemanar_long_sword");
+        tool(itemhandHeld, "durantium_pickaxe");
+        tool(itemhandHeld, "durantium_shovel");
+        tool(itemhandHeld, "durantium_axe");
+        tool(itemhandHeld, "durantium_hoe");
 
     }
 
