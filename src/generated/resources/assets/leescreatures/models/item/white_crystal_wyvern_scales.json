@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "leescreatures:item/white_crystal_wyvern_scales"
+  }
+}

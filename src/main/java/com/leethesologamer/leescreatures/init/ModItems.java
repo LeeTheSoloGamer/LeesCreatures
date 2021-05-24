@@ -106,8 +106,8 @@ public class ModItems {
 
 
     //food
-    public static final RegistryObject<Item> BOARLIN_MEAT = ITEMS.register("boarlin_meat",
-            () -> new Item(new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).food(FoodInit.BOARLIN_MEEAT)));
+    public static final RegistryObject<Item> COOKED_BOARLIN = ITEMS.register("cooked_boarlin",
+            () -> new Item(new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).food(FoodInit.COOKED_BOARLIN)));
 
     public static final RegistryObject<Item> RAW_BOARLIN = ITEMS.register("raw_boarlin",
             () -> new Item(new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).food(FoodInit.RAW_BOARLIN)));
@@ -226,7 +226,7 @@ public class ModItems {
     private static final RegistryObject<ArmorItem> BEASTLY_BOOTS = ITEMS.register("beastly_boots", () ->
             new ArmorItem(ModArmorMaterial.BEASTLY_ARMOR, EquipmentSlotType.FEET, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
-    private static final RegistryObject<Item> JUNGLE_SERPENT_HELMET = ITEMS.register("jungle_serpent_helmet", () ->
+    private static final RegistryObject<ArmorItem> JUNGLE_SERPENT_HELMET = ITEMS.register("jungle_serpent_helmet", () ->
             new ArmorItem(ModArmorMaterial.JUNGLE_SERPENT_ARMOR, EquipmentSlotType.HEAD, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
     private static final RegistryObject<ArmorItem> JUNGLE_SERPENT_CHESTPLATE = ITEMS.register("jungle_serpent_chestplate", () ->
@@ -238,7 +238,7 @@ public class ModItems {
     private static final RegistryObject<ArmorItem> JUNGLE_SERPENT_BOOTS = ITEMS.register("jungle_serpent_boots", () ->
             new ArmorItem(ModArmorMaterial.JUNGLE_SERPENT_ARMOR, EquipmentSlotType.FEET, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
-    private static final RegistryObject<Item> BLUE_CRYSTAL_WYVERN_HELMET = ITEMS.register("blue_crystal_wyvern_helmet", () ->
+    private static final RegistryObject<ArmorItem> BLUE_CRYSTAL_WYVERN_HELMET = ITEMS.register("blue_crystal_wyvern_helmet", () ->
             new ArmorItem(ModArmorMaterial.BLUE_CRYSTAL_WYVERN_ARMOR, EquipmentSlotType.HEAD, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
     private static final RegistryObject<ArmorItem> BLUE_CRYSTAL_WYVERN_CHESTPLATE = ITEMS.register("blue_crystal_wyvern_chestplate", () ->
@@ -250,7 +250,7 @@ public class ModItems {
     private static final RegistryObject<ArmorItem> BLUE_CRYSTAL_WYVERN_BOOTS = ITEMS.register("blue_crystal_wyvern_boots", () ->
             new ArmorItem(ModArmorMaterial.BLUE_CRYSTAL_WYVERN_ARMOR, EquipmentSlotType.FEET, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
-    private static final RegistryObject<Item> LIGHT_BLUE_CRYSTAL_WYVERN_HELMET = ITEMS.register("light_blue_crystal_wyvern_helmet", () ->
+    private static final RegistryObject<ArmorItem> LIGHT_BLUE_CRYSTAL_WYVERN_HELMET = ITEMS.register("light_blue_crystal_wyvern_helmet", () ->
             new ArmorItem(ModArmorMaterial.CRYSTAL_WYVERN_ARMOR, EquipmentSlotType.HEAD, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
     private static final RegistryObject<ArmorItem> LIGHT_BLUE_CRYSTAL_WYVERN_CHESTPLATE = ITEMS.register("light_blue_crystal_wyvern_chestplate", () ->
@@ -274,7 +274,7 @@ public class ModItems {
     private static final RegistryObject<ArmorItem> PURPLE_CRYSTAL_WYVERN_BOOTS = ITEMS.register("purple_crystal_wyvern_boots", () ->
             new ArmorItem(ModArmorMaterial.PURPLE_CRYSTAL_WYVERN_ARMOR, EquipmentSlotType.FEET, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
-    private static final RegistryObject<Item> PINK_CRYSTAL_WYVERN_HELMET = ITEMS.register("pink_crystal_wyvern_helmet", () ->
+    private static final RegistryObject<ArmorItem> PINK_CRYSTAL_WYVERN_HELMET = ITEMS.register("pink_crystal_wyvern_helmet", () ->
             new ArmorItem(ModArmorMaterial.PINK_CRYSTAL_WYVERN_ARMOR, EquipmentSlotType.HEAD, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
     private static final RegistryObject<ArmorItem> PINK_CRYSTAL_WYVERN_CHESTPLATE = ITEMS.register("pink_crystal_wyvern_chestplate", () ->

@@ -1,6 +1,0 @@
-{
-	"parent": "item/handheld",
-	"textures": {
-		"layer0": "leescreatures:items/greemanar_long_sword"
-	}
-}
