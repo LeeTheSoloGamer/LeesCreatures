@@ -112,16 +112,16 @@ public class AdderBackEntity extends AnimalEntity implements IAnimatable {
         return this.factory;
     }
 
-    @Nullable
-    @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return null;
-    }
-
     @Override
     protected void registerData() {
         super.registerData();
     }
+
+	@Override
+	public AgeableEntity createChild(ServerWorld arg0, AgeableEntity arg1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
 

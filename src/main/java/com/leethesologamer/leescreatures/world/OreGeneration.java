@@ -29,6 +29,6 @@ public class OreGeneration {
         settings.withFeature(GenerationStage.Decoration.UNDERGROUND_ORES,
                 Feature.ORE.withConfiguration(new OreFeatureConfig(fillerType, state, veinSize))
                         .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(minHeight, 0, maxHeight)))
-                        .square().func_242731_b(amount));
+                        .square().count(amount));
     }
 }
