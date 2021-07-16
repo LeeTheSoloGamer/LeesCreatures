@@ -133,7 +133,7 @@ public class FlorretEntity extends TameableEntity implements IAnimatable {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
+    public AgeableEntity createChild(ServerWorld serverWorld, AgeableEntity ageableEntity) {
         return null;
     }
 
