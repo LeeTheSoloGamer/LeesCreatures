@@ -6,8 +6,16 @@ import com.leethesologamer.leescreatures.objects.items.ModSpawnEggItem;
 import com.leethesologamer.leescreatures.objects.items.ModSwordItem;
 import com.leethesologamer.leescreatures.util.enums.ModArmorMaterial;
 import com.leethesologamer.leescreatures.util.enums.ModItemTier;
+
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.*;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.AxeItem;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.HoeItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.PickaxeItem;
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.SwordItem;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -159,7 +167,11 @@ public class ModItems {
     public static final RegistryObject<HoeItem> DURANTIUM_HOE = ITEMS.register("durantium_hoe", () ->
             new HoeItem(ModItemTier.DURANTIUM_HOE, -4, 0.0f, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
-
+    public static final RegistryObject<ModSpawnEggItem> CRYSTAL_WYVERN_SPAWN_EGG = ITEMS.register("crystal_wyvern_spawn_egg",
+            () -> new ModSpawnEggItem(ModEntityTypes.CRYSTAL_WYVERN_ENTITY, 0xDBD9D9, 0xCA34EF,
+                    new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).maxStackSize(16)));
+    
+    /*
     //Spawn Egg
     public static final RegistryObject<ModSpawnEggItem> BOARLIN_SPAWN_EGG = ITEMS.register("boarlin_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.BOARLIN_ENTITY, 0xC4AA79, 0x7A5F22,
@@ -167,10 +179,6 @@ public class ModItems {
 
     public static final RegistryObject<ModSpawnEggItem> SOULEURON_SPAWN_EGG = ITEMS.register("souleuron_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.SOULEURON_ENTITY, 0x896A26, 0xCE0600,
-                    new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).maxStackSize(16)));
-
-    public static final RegistryObject<ModSpawnEggItem> CRYSTAL_WYVERN_SPAWN_EGG = ITEMS.register("crystal_wyvern_spawn_egg",
-            () -> new ModSpawnEggItem(ModEntityTypes.CRYSTAL_WYVERN_ENTITY, 0xDBD9D9, 0xCA34EF,
                     new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).maxStackSize(16)));
 
     public static final RegistryObject<ModSpawnEggItem> JUNGLE_SERPENT_SPAWN_EGG = ITEMS.register("jungle_serpent_spawn_egg",
@@ -188,6 +196,8 @@ public class ModItems {
     public static final RegistryObject<ModSpawnEggItem> FLORRET_SPAWN_EGG = ITEMS.register("florret_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.FLORRET_ENTITY, 0x7A7A7A, 0x1E1E1E,
                     new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).maxStackSize(16)));
+
+     */
 
     //Armor
     private static final RegistryObject<ArmorItem> GREEMANAR_HELMET = ITEMS.register("greemanar_helmet", () ->

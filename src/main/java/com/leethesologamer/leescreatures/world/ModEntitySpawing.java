@@ -1,20 +1,12 @@
 package com.leethesologamer.leescreatures.world;
 
-import com.leethesologamer.leescreatures.entities.*;
-import com.leethesologamer.leescreatures.init.ModEntityTypes;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.MobSpawnInfo;
-import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.lwjgl.system.CallbackI;
 
 public class ModEntitySpawing {
     @SubscribeEvent
     public static void onBiomesLoad(BiomeLoadingEvent event) {
+    	/*
         if (event.getCategory() == Biome.Category.FOREST || event.getCategory() == Biome.Category.EXTREME_HILLS || event.getCategory() == Biome.Category.SAVANNA || event.getCategory() == Biome.Category.PLAINS || event.getCategory() == Biome.Category.MESA)
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(ModEntityTypes.BOARLIN_ENTITY.get(), 8, 1, 3));
 
@@ -35,10 +27,12 @@ public class ModEntitySpawing {
 
         if (event.getCategory() == Biome.Category.FOREST || event.getCategory() == Biome.Category.JUNGLE || event.getCategory() == Biome.Category.PLAINS)
             event.getSpawns().getSpawner(EntityClassification.CREATURE).add(new MobSpawnInfo.Spawners(ModEntityTypes.FLORRET_ENTITY.get(), 20, 0, 1));
+    	*/
     }
 
     public static void entitySpawnPlacementRegistry ()
     {
+    	/*
         EntitySpawnPlacementRegistry.register(ModEntityTypes.JUNGLE_SERPENT_ENTITY.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, JungleSerpentEntity::canJungleSerpentEntitySpawn);
 
         EntitySpawnPlacementRegistry.register(ModEntityTypes.BEAST_DOG_ENTITY.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BeastDogEntity::canBeastDogEntitySpawn);
@@ -54,5 +48,6 @@ public class ModEntitySpawing {
         EntitySpawnPlacementRegistry.register(ModEntityTypes.ADDER_BACK_ENTITY.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AdderBackEntity::canAdderBackEntitySpawn);
 
         EntitySpawnPlacementRegistry.register(ModEntityTypes.SOULEURON_ENTITY.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, SouleuronEntity::canSouleuronSpawn);
+    	*/
     }
 }

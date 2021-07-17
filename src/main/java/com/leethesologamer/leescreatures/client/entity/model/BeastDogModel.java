@@ -1,7 +1,8 @@
 package com.leethesologamer.leescreatures.client.entity.model;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
-import com.leethesologamer.leescreatures.entities.BeastDogEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.BeastDogEntity;
+
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;

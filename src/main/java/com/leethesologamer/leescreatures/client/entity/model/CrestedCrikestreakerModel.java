@@ -1,7 +1,8 @@
 package com.leethesologamer.leescreatures.client.entity.model;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
-import com.leethesologamer.leescreatures.entities.CrestedCrikestreakerEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.CrestedCrikestreakerEntity;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

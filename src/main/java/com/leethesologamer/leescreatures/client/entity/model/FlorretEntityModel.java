@@ -1,8 +1,9 @@
 package com.leethesologamer.leescreatures.client.entity.model;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
-import com.leethesologamer.leescreatures.entities.FlorretEntity;
-import com.leethesologamer.leescreatures.entities.SouleuronEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.FlorretEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.SouleuronEntity;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

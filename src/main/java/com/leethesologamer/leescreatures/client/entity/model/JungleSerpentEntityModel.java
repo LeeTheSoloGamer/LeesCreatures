@@ -1,6 +1,7 @@
 package com.leethesologamer.leescreatures.client.entity.model;
 import com.leethesologamer.leescreatures.LeesCreatures;
-import com.leethesologamer.leescreatures.entities.JungleSerpentEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.JungleSerpentEntity;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

@@ -2,7 +2,7 @@ package com.leethesologamer.leescreatures.client.entity.render;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
 import com.leethesologamer.leescreatures.client.entity.model.BoarlinEntityModel;
-import com.leethesologamer.leescreatures.entities.BoarlinEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.BoarlinEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

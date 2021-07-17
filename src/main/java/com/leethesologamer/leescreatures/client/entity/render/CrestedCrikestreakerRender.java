@@ -2,8 +2,8 @@ package com.leethesologamer.leescreatures.client.entity.render;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
 import com.leethesologamer.leescreatures.client.entity.model.CrestedCrikestreakerModel;
-import com.leethesologamer.leescreatures.entities.CrestedCrikestreakerEntity;
-import com.leethesologamer.leescreatures.entities.CrystalWyvernEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.CrestedCrikestreakerEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.CrystalWyvernEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

@@ -1,23 +1,25 @@
 package com.leethesologamer.leescreatures;
 
-import com.leethesologamer.leescreatures.entities.*;
-import com.leethesologamer.leescreatures.init.ModSoundEventTypes;
-import com.leethesologamer.leescreatures.world.ModEntitySpawing;
-import com.leethesologamer.leescreatures.world.OreGeneration;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.leethesologamer.leescreatures.entities.CrystalWyvernEntity;
 import com.leethesologamer.leescreatures.init.ModBlocks;
 import com.leethesologamer.leescreatures.init.ModEntityTypes;
 import com.leethesologamer.leescreatures.init.ModItems;
+import com.leethesologamer.leescreatures.init.ModSoundEventTypes;
 import com.leethesologamer.leescreatures.objects.items.ModSpawnEggItem;
+import com.leethesologamer.leescreatures.world.ModEntitySpawing;
+import com.leethesologamer.leescreatures.world.OreGeneration;
+
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -58,6 +60,9 @@ public class  LeesCreatures {
 
     private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+        	
+        	 GlobalEntityTypeAttributes.put(ModEntityTypes.CRYSTAL_WYVERN_ENTITY.get(), CrystalWyvernEntity.registerAttributes().create());
+        	/*
             GlobalEntityTypeAttributes.put(ModEntityTypes.BOARLIN_ENTITY.get(), BoarlinEntity.registerAttributes().create());
             GlobalEntityTypeAttributes.put(ModEntityTypes.SOULEURON_ENTITY.get(), SouleuronEntity.registerAttributes().create());
             GlobalEntityTypeAttributes.put(ModEntityTypes.CRYSTAL_WYVERN_ENTITY.get(), CrystalWyvernEntity.registerAttributes().create());
@@ -67,6 +72,7 @@ public class  LeesCreatures {
             GlobalEntityTypeAttributes.put(ModEntityTypes.ADDER_BACK_ENTITY.get(), AdderBackEntity.registerAttributes().create());
             GlobalEntityTypeAttributes.put(ModEntityTypes.FLORRET_ENTITY.get(), FlorretEntity.registerAttributes().create());
             GlobalEntityTypeAttributes.put(ModEntityTypes.COSMIC_WHALE_ENTITY.get(), CosmicWhaleEntity.registerAttributes().create());
+        	 */
          });
         ModEntitySpawing.entitySpawnPlacementRegistry();
     }

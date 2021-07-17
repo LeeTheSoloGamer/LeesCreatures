@@ -24,7 +24,7 @@ public class FlyerBetterPathNavigator extends GroundPathNavigator
         maxDistanceToWaypoint = ((int) (entity.getWidth() + 1f)) * 0.5f;
         boolean isWithinPathPoint = xDiff < maxDistanceToWaypoint && zDiff < maxDistanceToWaypoint && yDiff < 1;
 
-        if (isWithinPathPoint || (entity.func_233660_b_(currentPath.func_237225_h_().nodeType) && isPathLongEnough(pos)))
+        if (isWithinPathPoint || (entity.func_233660_b_(currentPath.getCurrentPoint().nodeType) && isPathLongEnough(pos)))
             currentPath.incrementPathIndex();
 
         checkForStuck(pos);

@@ -1,7 +1,8 @@
 package com.leethesologamer.leescreatures.entities.flying.ai;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
-import com.leethesologamer.leescreatures.entities.CrestedCrikestreakerEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.CrestedCrikestreakerEntity;
+
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.util.math.vector.Vector3d;

@@ -3,7 +3,7 @@ package com.leethesologamer.leescreatures.entities.flying.ai.goals;
 import java.util.EnumSet;
 import java.util.Random;
 
-import com.leethesologamer.leescreatures.entities.CrystalWyvernEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.CrystalWyvernEntity;
 
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;

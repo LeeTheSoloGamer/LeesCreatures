@@ -1,7 +1,8 @@
 package com.leethesologamer.leescreatures.init;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
-import com.leethesologamer.leescreatures.entities.*;
+import com.leethesologamer.leescreatures.entities.CrystalWyvernEntity;
+
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -13,6 +14,14 @@ public class ModEntityTypes {
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, LeesCreatures.MOD_ID);
 
+    public static final RegistryObject<EntityType<CrystalWyvernEntity>> CRYSTAL_WYVERN_ENTITY = ENTITY_TYPES
+            .register("crystal_wyvern_entity",() -> EntityType.Builder.<CrystalWyvernEntity>create(CrystalWyvernEntity::new, EntityClassification.CREATURE)
+                    .size(0.9f,1.6f)
+                    .build(new ResourceLocation(LeesCreatures.MOD_ID, "crystal_wyvern_entity").toString()));
+
+    
+    /*
+    
     public static final RegistryObject<EntityType<BoarlinEntity>> BOARLIN_ENTITY = ENTITY_TYPES
             .register("boarlin_entity",() -> EntityType.Builder.<BoarlinEntity>create(BoarlinEntity::new, EntityClassification.CREATURE)
                     .size(0.7f,1.56f)
@@ -22,12 +31,6 @@ public class ModEntityTypes {
             .register("souleuron_entity",() -> EntityType.Builder.<SouleuronEntity>create(SouleuronEntity::new, EntityClassification.CREATURE)
                     .size(0.9f,1.9f)
                     .build(new ResourceLocation(LeesCreatures.MOD_ID, "souleuron_entity").toString()));
-
-    public static final RegistryObject<EntityType<CrystalWyvernEntity>> CRYSTAL_WYVERN_ENTITY = ENTITY_TYPES
-            .register("crystal_wyvern_entity",() -> EntityType.Builder.<CrystalWyvernEntity>create(CrystalWyvernEntity::new, EntityClassification.CREATURE)
-                    .size(0.9f,1.6f)
-                    .build(new ResourceLocation(LeesCreatures.MOD_ID, "crystal_wyvern_entity").toString()));
-
 
     public static final RegistryObject<EntityType<JungleSerpentEntity>> JUNGLE_SERPENT_ENTITY = ENTITY_TYPES
             .register("jungle_serpent_entity",() -> EntityType.Builder.<JungleSerpentEntity>create(JungleSerpentEntity::new, EntityClassification.CREATURE)
@@ -59,4 +62,5 @@ public class ModEntityTypes {
                     .size(0.2f,1.3f)
                     .build(new ResourceLocation(LeesCreatures.MOD_ID, "cosmic_whale_entity").toString()));
 
+     */
 }

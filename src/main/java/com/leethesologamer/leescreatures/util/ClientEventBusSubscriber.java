@@ -1,8 +1,9 @@
 package com.leethesologamer.leescreatures.util;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
-import com.leethesologamer.leescreatures.client.entity.render.*;
+import com.leethesologamer.leescreatures.client.entity.render.CrystalWyvernEntityRender;
 import com.leethesologamer.leescreatures.init.ModEntityTypes;
+
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -14,6 +15,9 @@ public class ClientEventBusSubscriber {
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
+    	 RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CRYSTAL_WYVERN_ENTITY.get(), CrystalWyvernEntityRender::new);
+    	
+    	/*
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOARLIN_ENTITY.get(), BoarlinEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.SOULEURON_ENTITY.get(), SouleuronEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CRYSTAL_WYVERN_ENTITY.get(), CrystalWyvernEntityRender::new);
@@ -23,6 +27,6 @@ public class ClientEventBusSubscriber {
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.ADDER_BACK_ENTITY.get(), AdderBackEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLORRET_ENTITY.get(), FlorretEntityRender::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.COSMIC_WHALE_ENTITY.get(), CosmicWhaleEntityRender::new);
-
+    	 */
     }
 }

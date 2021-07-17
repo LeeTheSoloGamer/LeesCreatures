@@ -2,8 +2,8 @@ package com.leethesologamer.leescreatures.client.entity.render;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
 import com.leethesologamer.leescreatures.client.entity.model.JungleSerpentEntityModel;
-import com.leethesologamer.leescreatures.entities.BeastDogEntity;
-import com.leethesologamer.leescreatures.entities.JungleSerpentEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.BeastDogEntity;
+import com.leethesologamer.leescreatures.entitiesOLD.JungleSerpentEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
