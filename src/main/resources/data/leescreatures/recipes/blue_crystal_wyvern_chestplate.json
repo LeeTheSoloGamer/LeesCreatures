@@ -10,12 +10,12 @@
   {
     "x":
     {
-      "item": "leescreatures:beastly_hide"
+      "item": "leescreatures:blue_crystal_wyvern_scales"
     }
   },
   "result":
   {
-    "item": "leescreatures:beastly_chestplate",
+    "item": "leescreatures:blue_crystal_wyvern_chestplate",
     "count": 1
   }
 }
