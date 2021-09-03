@@ -108,7 +108,7 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
         return worldIn.getLightSubtracted(pos, 0) > 8;
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Override
     public void handleStatusUpdate(byte id) {
         if (id == 10) {
             this.exampleTimer = 40;
@@ -171,7 +171,7 @@ public class CrestedCrikestreakerEntity extends CreatureEntity implements IAnima
         this.dataManager.set(VARIANT, type);
     }
 
-    @OnlyIn(Dist.CLIENT)
+    
     public boolean isAttacking() {
         return this.dataManager.get(ATTACKING);
     }

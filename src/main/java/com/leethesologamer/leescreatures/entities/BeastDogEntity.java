@@ -119,7 +119,7 @@ public class BeastDogEntity extends TameableEntity implements IAnimatable {
         super.livingTick();
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Override
     public void handleStatusUpdate(byte id) {
         if (id == 10) {
             this.exampleTimer = 40;

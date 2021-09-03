@@ -152,7 +152,7 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable, 
 		if (this.isAggressive()) setFlying(false);
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	@Override
 	public void handleStatusUpdate(byte id) {
 		if (id == 10) {
 			this.exampleTimer = 40;
@@ -471,7 +471,6 @@ public class CrystalWyvernEntity extends TameableEntity implements IAnimatable, 
         return null;
     }
 	
-	 @OnlyIn(Dist.CLIENT)
 	    protected void updateClientControls() {
 	        Minecraft mc = Minecraft.getInstance();
 	        if (this.isRidingPlayer(mc.player)) {

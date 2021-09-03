@@ -71,7 +71,7 @@ public class SouleuronEntity extends AnimalEntity implements IAnimatable {
         super.livingTick();
     }
 
-    @OnlyIn(Dist.CLIENT)
+    @Override
     public void handleStatusUpdate(byte id) {
         if (id == 10) {
             this.exampleTimer = 40;
