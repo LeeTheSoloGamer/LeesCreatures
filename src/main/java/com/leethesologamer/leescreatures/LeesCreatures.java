@@ -3,7 +3,15 @@ package com.leethesologamer.leescreatures;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.leethesologamer.leescreatures.entities.BoarlinEntity;
 import com.leethesologamer.leescreatures.entities.CrystalWyvernEntity;
+import com.leethesologamer.leescreatures.entities.SouleuronEntity;
+import com.leethesologamer.leescreatures.entities.BeastDogEntity;
+import com.leethesologamer.leescreatures.entities.FlorretEntity;
+import com.leethesologamer.leescreatures.entities.JungleSerpentEntity;
+import com.leethesologamer.leescreatures.entities.CosmicWhaleEntity;
+import com.leethesologamer.leescreatures.entities.AdderBackEntity;
+import com.leethesologamer.leescreatures.entities.CrestedCrikestreakerEntity;
 import com.leethesologamer.leescreatures.init.ModBlocks;
 import com.leethesologamer.leescreatures.init.ModEntityTypes;
 import com.leethesologamer.leescreatures.init.ModItems;
@@ -23,7 +31,6 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import software.bernie.example.GeckoLibMod;
@@ -42,6 +49,7 @@ public class  LeesCreatures {
         bus.addListener(this::setup);
         GeckoLibMod.DISABLE_IN_DEV = true;
         GeckoLib.initialize();
+   
 
         ModBlocks.BLOCKS.register(bus);
         ModItems.ITEMS.register(bus);
@@ -58,28 +66,23 @@ public class  LeesCreatures {
         ModEntitySpawing.onBiomesLoad(event);
     }
 
-    private void setup(final FMLCommonSetupEvent event) {
+    @SuppressWarnings("deprecation")
+	private void setup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-        	
         	 GlobalEntityTypeAttributes.put(ModEntityTypes.CRYSTAL_WYVERN_ENTITY.get(), CrystalWyvernEntity.registerAttributes().create());
-        	/*
-            GlobalEntityTypeAttributes.put(ModEntityTypes.BOARLIN_ENTITY.get(), BoarlinEntity.registerAttributes().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.SOULEURON_ENTITY.get(), SouleuronEntity.registerAttributes().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.CRYSTAL_WYVERN_ENTITY.get(), CrystalWyvernEntity.registerAttributes().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.JUNGLE_SERPENT_ENTITY.get(), JungleSerpentEntity.registerAttributes().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.BEAST_DOG_ENTITY.get(), BeastDogEntity.registerAttributes().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.CRESTED_CRIKESTREAKER_ENTITY.get(), CrestedCrikestreakerEntity.registerAttributes().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.ADDER_BACK_ENTITY.get(), AdderBackEntity.registerAttributes().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.FLORRET_ENTITY.get(), FlorretEntity.registerAttributes().create());
-            GlobalEntityTypeAttributes.put(ModEntityTypes.COSMIC_WHALE_ENTITY.get(), CosmicWhaleEntity.registerAttributes().create());
-        	 */
+        	 GlobalEntityTypeAttributes.put(ModEntityTypes.BOARLIN_ENTITY.get(), BoarlinEntity.registerAttributes().create());
+        	 GlobalEntityTypeAttributes.put(ModEntityTypes.SOULEURON_ENTITY.get(), SouleuronEntity.registerAttributes().create());
+        	 GlobalEntityTypeAttributes.put(ModEntityTypes.JUNGLE_SERPENT_ENTITY.get(), JungleSerpentEntity.registerAttributes().create());
+             GlobalEntityTypeAttributes.put(ModEntityTypes.BEAST_DOG_ENTITY.get(), BeastDogEntity.registerAttributes().create());
+             GlobalEntityTypeAttributes.put(ModEntityTypes.CRESTED_CRIKESTREAKER_ENTITY.get(), CrestedCrikestreakerEntity.registerAttributes().create());
+             GlobalEntityTypeAttributes.put(ModEntityTypes.ADDER_BACK_ENTITY.get(), AdderBackEntity.registerAttributes().create());
+             GlobalEntityTypeAttributes.put(ModEntityTypes.FLORRET_ENTITY.get(), FlorretEntity.registerAttributes().create());
+             GlobalEntityTypeAttributes.put(ModEntityTypes.COSMIC_WHALE_ENTITY.get(), CosmicWhaleEntity.registerAttributes().create());
          });
         ModEntitySpawing.entitySpawnPlacementRegistry();
     }
-    private void doClientStuff(final FMLClientSetupEvent event) {
-
-    }
-        @SubscribeEvent
+    
+    @SubscribeEvent
         public static void onRegisterEntities(final RegistryEvent.Register<EntityType<?>> event) {
         ModSpawnEggItem.initSpawnEggs();
     }
