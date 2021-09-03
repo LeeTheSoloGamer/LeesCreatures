@@ -157,7 +157,8 @@ public class JungleSerpentEntity extends TameableEntity implements IAnimatable {
         return 3;
     }
 
-    public static boolean canJungleSerpentEntitySpawn( EntityType<JungleSerpentEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn ){
+    @SuppressWarnings("unchecked")
+	public static boolean canJungleSerpentEntitySpawn( EntityType<JungleSerpentEntity> entity, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn ){
         BlockState blockstate = worldIn.getBlockState(pos.down());
         return (worldIn.hasWater(pos)) || (blockstate.isIn((ITag<Block>) Blocks.WATER)) || (blockstate.isIn((ITag<Block>) Blocks.GRASS_BLOCK)) || (blockstate.isIn(BlockTags.LEAVES)) && worldIn.getLightSubtracted(pos, 0) > 8;
     }
