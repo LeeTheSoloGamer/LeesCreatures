@@ -166,13 +166,13 @@ public class ModItems {
 
     public static final RegistryObject<HoeItem> DURANTIUM_HOE = ITEMS.register("durantium_hoe", () ->
             new HoeItem(ModItemTier.DURANTIUM_HOE, -4, 0.0f, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
+    
+  //Spawn Egg
 
     public static final RegistryObject<ModSpawnEggItem> CRYSTAL_WYVERN_SPAWN_EGG = ITEMS.register("crystal_wyvern_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.CRYSTAL_WYVERN_ENTITY, 0xDBD9D9, 0xCA34EF,
                     new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).maxStackSize(16)));
     
-    /*
-    //Spawn Egg
     public static final RegistryObject<ModSpawnEggItem> BOARLIN_SPAWN_EGG = ITEMS.register("boarlin_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.BOARLIN_ENTITY, 0xC4AA79, 0x7A5F22,
                     new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).maxStackSize(16)));
@@ -196,8 +196,6 @@ public class ModItems {
     public static final RegistryObject<ModSpawnEggItem> FLORRET_SPAWN_EGG = ITEMS.register("florret_spawn_egg",
             () -> new ModSpawnEggItem(ModEntityTypes.FLORRET_ENTITY, 0x7A7A7A, 0x1E1E1E,
                     new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP).maxStackSize(16)));
-
-     */
 
     //Armor
     private static final RegistryObject<ArmorItem> GREEMANAR_HELMET = ITEMS.register("greemanar_helmet", () ->
@@ -320,5 +318,163 @@ public class ModItems {
     private static final RegistryObject<ArmorItem> WHITE_CRYSTAL_WYVERN_BOOTS = ITEMS.register("white_crystal_wyvern_boots", () ->
             new ArmorItem(ModArmorMaterial.WHITE_CRYSTAL_WYVERN_ARMOR, EquipmentSlotType.FEET, new Item.Properties().group(LeesCreatures.LEES_CREATURES_GROUP)));
 
+	public static RegistryObject<ArmorItem> getGreemanarHelmet() {
+		return GREEMANAR_HELMET;
+	}
 
+	public static RegistryObject<ArmorItem> getGreemanarChestplate() {
+		return GREEMANAR_CHESTPLATE;
+	}
+
+	public static RegistryObject<ArmorItem> getGreemanarLeggings() {
+		return GREEMANAR_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getGreemanarBoots() {
+		return GREEMANAR_BOOTS;
+	}
+
+	public static RegistryObject<ArmorItem> getDurantiumHelmet() {
+		return DURANTIUM_HELMET;
+	}
+
+	public static RegistryObject<ArmorItem> getDurantiumChestplate() {
+		return DURANTIUM_CHESTPLATE;
+	}
+
+	public static RegistryObject<ArmorItem> getDurantiumLeggings() {
+		return DURANTIUM_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getDurantiumBoots() {
+		return DURANTIUM_BOOTS;
+	}
+
+	public static RegistryObject<ArmorItem> getBeastlyHelmet() {
+		return BEASTLY_HELMET;
+	}
+
+	public static RegistryObject<ArmorItem> getBeastlyChestplate() {
+		return BEASTLY_CHESTPLATE;
+	}
+
+	public static RegistryObject<ArmorItem> getBeastlyLeggings() {
+		return BEASTLY_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getBeastlyBoots() {
+		return BEASTLY_BOOTS;
+	}
+
+	public static RegistryObject<Item> getJungleSerpentHelmet() {
+		return JUNGLE_SERPENT_HELMET;
+	}
+
+	public static RegistryObject<ArmorItem> getJungleSerpentChestplate() {
+		return JUNGLE_SERPENT_CHESTPLATE;
+	}
+
+	public static RegistryObject<ArmorItem> getJungleSerpentLeggings() {
+		return JUNGLE_SERPENT_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getJungleSerpentBoots() {
+		return JUNGLE_SERPENT_BOOTS;
+	}
+
+	public static RegistryObject<Item> getBlueCrystalWyvernHelmet() {
+		return BLUE_CRYSTAL_WYVERN_HELMET;
+	}
+
+	public static RegistryObject<ArmorItem> getBlueCrystalWyvernChestplate() {
+		return BLUE_CRYSTAL_WYVERN_CHESTPLATE;
+	}
+
+	public static RegistryObject<ArmorItem> getBlueCrystalWyvernLeggings() {
+		return BLUE_CRYSTAL_WYVERN_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getBlueCrystalWyvernBoots() {
+		return BLUE_CRYSTAL_WYVERN_BOOTS;
+	}
+
+	public static RegistryObject<Item> getLightBlueCrystalWyvernHelmet() {
+		return LIGHT_BLUE_CRYSTAL_WYVERN_HELMET;
+	}
+
+	public static RegistryObject<ArmorItem> getLightBlueCrystalWyvernChestplate() {
+		return LIGHT_BLUE_CRYSTAL_WYVERN_CHESTPLATE;
+	}
+
+	public static RegistryObject<ArmorItem> getLightBlueCrystalWyvernLeggings() {
+		return LIGHT_BLUE_CRYSTAL_WYVERN_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getLightBlueCrystalWyvernBoots() {
+		return LIGHT_BLUE_CRYSTAL_WYVERN_BOOTS;
+	}
+
+	public static RegistryObject<ArmorItem> getPurpleCrystalWyvernChestplate() {
+		return PURPLE_CRYSTAL_WYVERN_CHESTPLATE;
+	}
+
+	public static RegistryObject<Item> getPurpleCrystalWyvernHelmet() {
+		return PURPLE_CRYSTAL_WYVERN_HELMET;
+	}
+
+	public static RegistryObject<ArmorItem> getPurpleCrystalWyvernLeggings() {
+		return PURPLE_CRYSTAL_WYVERN_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getPurpleCrystalWyvernBoots() {
+		return PURPLE_CRYSTAL_WYVERN_BOOTS;
+	}
+
+	public static RegistryObject<Item> getPinkCrystalWyvernHelmet() {
+		return PINK_CRYSTAL_WYVERN_HELMET;
+	}
+
+	public static RegistryObject<ArmorItem> getPinkCrystalWyvernChestplate() {
+		return PINK_CRYSTAL_WYVERN_CHESTPLATE;
+	}
+
+	public static RegistryObject<ArmorItem> getPinkCrystalWyvernLeggings() {
+		return PINK_CRYSTAL_WYVERN_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getPinkCrystalWyvernBoots() {
+		return PINK_CRYSTAL_WYVERN_BOOTS;
+	}
+
+	public static RegistryObject<Item> getVoiletCrystalWyvernHelmet() {
+		return VOILET_CRYSTAL_WYVERN_HELMET;
+	}
+
+	public static RegistryObject<ArmorItem> getVoiletCrystalWyvernChestplate() {
+		return VOILET_CRYSTAL_WYVERN_CHESTPLATE;
+	}
+
+	public static RegistryObject<ArmorItem> getVoiletCrystalWyvernBoots() {
+		return VOILET_CRYSTAL_WYVERN_BOOTS;
+	}
+
+	public static RegistryObject<Item> getWhiteCrystalWyvernHelmet() {
+		return WHITE_CRYSTAL_WYVERN_HELMET;
+	}
+
+	public static RegistryObject<ArmorItem> getWhiteCrystalWyvernChestplate() {
+		return WHITE_CRYSTAL_WYVERN_CHESTPLATE;
+	}
+
+	public static RegistryObject<ArmorItem> getWhiteCrystalWyvernLeggings() {
+		return WHITE_CRYSTAL_WYVERN_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getVoiletCrystalWyvernLeggings() {
+		return VOILET_CRYSTAL_WYVERN_LEGGINGS;
+	}
+
+	public static RegistryObject<ArmorItem> getWhiteCrystalWyvernBoots() {
+		return WHITE_CRYSTAL_WYVERN_BOOTS;
+	}
 }

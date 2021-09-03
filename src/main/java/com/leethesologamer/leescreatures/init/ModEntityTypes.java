@@ -1,7 +1,15 @@
 package com.leethesologamer.leescreatures.init;
 
 import com.leethesologamer.leescreatures.LeesCreatures;
+import com.leethesologamer.leescreatures.entities.AdderBackEntity;
+import com.leethesologamer.leescreatures.entities.BeastDogEntity;
+import com.leethesologamer.leescreatures.entities.BoarlinEntity;
+import com.leethesologamer.leescreatures.entities.CosmicWhaleEntity;
+import com.leethesologamer.leescreatures.entities.CrestedCrikestreakerEntity;
 import com.leethesologamer.leescreatures.entities.CrystalWyvernEntity;
+import com.leethesologamer.leescreatures.entities.FlorretEntity;
+import com.leethesologamer.leescreatures.entities.JungleSerpentEntity;
+import com.leethesologamer.leescreatures.entities.SouleuronEntity;
 
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -19,9 +27,6 @@ public class ModEntityTypes {
                     .size(0.9f,1.6f)
                     .build(new ResourceLocation(LeesCreatures.MOD_ID, "crystal_wyvern_entity").toString()));
 
-    
-    /*
-    
     public static final RegistryObject<EntityType<BoarlinEntity>> BOARLIN_ENTITY = ENTITY_TYPES
             .register("boarlin_entity",() -> EntityType.Builder.<BoarlinEntity>create(BoarlinEntity::new, EntityClassification.CREATURE)
                     .size(0.7f,1.56f)
@@ -62,5 +67,4 @@ public class ModEntityTypes {
                     .size(0.2f,1.3f)
                     .build(new ResourceLocation(LeesCreatures.MOD_ID, "cosmic_whale_entity").toString()));
 
-     */
 }
