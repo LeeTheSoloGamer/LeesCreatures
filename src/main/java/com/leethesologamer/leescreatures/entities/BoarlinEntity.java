@@ -48,8 +48,6 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -194,11 +192,6 @@ public class BoarlinEntity extends TameableEntity implements IAngerable, IAnimat
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
-    }
-
-    @Nullable
-    public AgeableEntity func_241840_a(ServerWorld serverWorld, AgeableEntity ageableEntity) {
-        return null;
     }
 
     @Override
